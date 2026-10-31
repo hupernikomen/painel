@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -19,18 +18,13 @@
       --orange: #e65100;
       --warn-bg: #fff3e0;
     }
-
-    * {
-      box-sizing: border-box;
-    }
-
+    * { box-sizing: border-box; }
     body {
       margin: 0;
       font-family: Roboto, sans-serif;
       background: var(--bg);
       color: var(--ink);
     }
-
     header {
       display: flex;
       align-items: center;
@@ -43,19 +37,8 @@
       top: 0;
       z-index: 10;
     }
-
-    h1 {
-      margin: 0;
-      font-size: 18px;
-      font-weight: 700;
-    }
-
-    .sub {
-      margin: 2px 0 0;
-      font-size: 12px;
-      color: var(--muted);
-    }
-
+    h1 { margin: 0; font-size: 18px; font-weight: 700; }
+    .sub { margin: 2px 0 0; font-size: 12px; color: var(--muted); }
     button {
       border: 0;
       border-radius: 12px;
@@ -66,40 +49,12 @@
       font-weight: 500;
       cursor: pointer;
     }
-
-    button:disabled {
-      opacity: 0.55;
-      cursor: default;
-    }
-
-    .btn {
-      background: var(--green);
-      color: #fff;
-    }
-
-    .btn-ghost {
-      background: #f4f5f7;
-      color: #333;
-    }
-
-    .btn-danger {
-      background: #ffebee;
-      color: var(--red);
-    }
-
-    .btn-sm {
-      height: 30px;
-      padding: 0 10px;
-      font-size: 12px;
-      border-radius: 10px;
-    }
-
-    main {
-      max-width: 1040px;
-      margin: 0 auto;
-      padding: 22px 16px 56px;
-    }
-
+    button:disabled { opacity: 0.55; cursor: default; }
+    .btn { background: var(--green); color: #fff; }
+    .btn-ghost { background: #f4f5f7; color: #333; }
+    .btn-danger { background: #ffebee; color: var(--red); }
+    .btn-sm { height: 30px; padding: 0 10px; font-size: 12px; border-radius: 10px; }
+    main { max-width: 1040px; margin: 0 auto; padding: 22px 16px 56px; }
     .login {
       max-width: 420px;
       margin: 48px auto;
@@ -108,55 +63,24 @@
       padding: 28px 22px;
       text-align: center;
     }
-
-    .login h2 {
-      margin: 0 0 8px;
-      font-size: 22px;
-    }
-
-    .login p {
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.5;
-    }
-
+    .login h2 { margin: 0 0 8px; font-size: 22px; }
+    .login p { color: var(--muted); font-size: 14px; line-height: 1.5; }
     .grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 10px;
       margin-bottom: 16px;
     }
-
-    .kpi {
-      background: #fff;
-      border-radius: 16px;
-      padding: 16px;
-    }
-
-    .kpi span {
-      display: block;
-      font-size: 12px;
-      color: var(--muted);
-      font-weight: 300;
-    }
-
-    .kpi strong {
-      display: block;
-      margin-top: 6px;
-      font-size: 24px;
-    }
-
-    .kpi.warn strong {
-      color: var(--orange);
-    }
-
+    .kpi { background: #fff; border-radius: 16px; padding: 16px; }
+    .kpi span { display: block; font-size: 12px; color: var(--muted); font-weight: 300; }
+    .kpi strong { display: block; margin-top: 6px; font-size: 24px; }
+    .kpi.warn strong { color: var(--orange); }
     .card {
       background: #fff;
       border-radius: 16px;
       padding: 6px 14px;
       margin-bottom: 16px;
     }
-
     h3 {
       margin: 18px 4px 8px;
       font-size: 12px;
@@ -165,62 +89,26 @@
       text-transform: uppercase;
       letter-spacing: 0.4px;
     }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 14px;
-    }
-
-    th,
-    td {
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th, td {
       text-align: left;
       padding: 12px 6px;
       border-bottom: 1px solid #f0f0f0;
       vertical-align: top;
     }
-
-    th {
-      font-size: 11px;
-      font-weight: 500;
-      color: var(--muted);
-    }
-
-    tr:last-child td {
-      border-bottom: 0;
-    }
-
-    .row-actions {
-      white-space: nowrap;
-    }
-
-    .err,
-    .aviso,
-    .ok {
+    th { font-size: 11px; font-weight: 500; color: var(--muted); }
+    tr:last-child td { border-bottom: 0; }
+    .row-actions { white-space: nowrap; }
+    .err, .aviso, .ok {
       border-radius: 12px;
       padding: 12px 14px;
       font-size: 13px;
       line-height: 1.45;
       margin-bottom: 14px;
     }
-
-    .err,
-    .aviso {
-      background: var(--warn-bg);
-      color: var(--orange);
-    }
-
-    .ok {
-      background: #e8f5e9;
-      color: #2e7d32;
-    }
-
-    .muted {
-      color: var(--muted);
-      font-weight: 300;
-      font-size: 12px;
-    }
-
+    .err, .aviso { background: var(--warn-bg); color: var(--orange); }
+    .ok { background: #e8f5e9; color: #2e7d32; }
+    .muted { color: var(--muted); font-weight: 300; font-size: 12px; }
     .tag {
       display: inline-block;
       font-size: 11px;
@@ -231,23 +119,16 @@
       color: var(--orange);
       margin-top: 4px;
     }
-
-    .tag-ok {
-      background: #e8f5e9;
-      color: #2e7d32;
-    }
-
     .modal-bg {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.4);
+      background: rgba(0,0,0,0.4);
       display: flex;
       align-items: center;
       justify-content: center;
       z-index: 50;
       padding: 16px;
     }
-
     .modal {
       width: 100%;
       max-width: 420px;
@@ -255,48 +136,19 @@
       border-radius: 18px;
       padding: 20px;
     }
-
-    .modal h4 {
-      margin: 0 0 8px;
-      font-size: 17px;
-    }
-
-    .modal p {
-      margin: 0 0 16px;
-      font-size: 14px;
-      color: #555;
-      line-height: 1.45;
-    }
-
-    .modal-actions {
-      display: flex;
-      gap: 10px;
-      justify-content: flex-end;
-    }
-
-    .hidden {
-      display: none !important;
-    }
-
+    .modal h4 { margin: 0 0 8px; font-size: 17px; }
+    .modal p { margin: 0 0 16px; font-size: 14px; color: #555; line-height: 1.45; }
+    .modal-actions { display: flex; gap: 10px; justify-content: flex-end; }
+    .hidden { display: none !important; }
     @media (max-width: 800px) {
-      .grid {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      header {
-        flex-direction: column;
-        align-items: flex-start;
-      }
+      .grid { grid-template-columns: 1fr 1fr; }
+      header { flex-direction: column; align-items: flex-start; }
     }
-
     @media (max-width: 520px) {
-      .grid {
-        grid-template-columns: 1fr;
-      }
+      .grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
-
 <body>
   <header>
     <div>
@@ -337,19 +189,17 @@
       where,
     } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 
-    // Troque pelo seu e-mail
     const EMAILS_PERMITIDOS = [
       "hupcontato@gmail.com",
     ];
 
-    // MESMO projeto do app
     const firebaseConfig = {
       apiKey: "AIzaSyDJFnhKXoUqKSIzsffYWkJ7qGIuEUhlUFs",
       authDomain: "psh-admin-8c0f7.firebaseapp.com",
       projectId: "psh-admin-8c0f7",
       storageBucket: "psh-admin-8c0f7.firebasestorage.app",
       messagingSenderId: "53234150017",
-      appId: "1:53234150017:web:6e64b2536d79dff74b7b80"
+      appId: "1:53234150017:web:6e64b2536d79dff74b7b80",
     };
 
     const app = initializeApp(firebaseConfig);
@@ -453,7 +303,7 @@
       const nR = await apagarQuery("registros", "igrejaId", igrejaId);
       try {
         await apagarQuery("caixinhas", "igrejaId", igrejaId);
-      } catch (_) { }
+      } catch (_) {}
       await deleteDoc(doc(db, "igrejas", igrejaId));
       await carregar(true);
       alert("Igreja \"" + nome + "\" excluída.\nMembros: " + nM + "\nRegistros: " + nR);
@@ -603,66 +453,66 @@
         "</tr></thead><tbody>" +
         (linhasIgreja.length
           ? linhasIgreja
-            .map(function (ig) {
-              return (
-                "<tr><td>" +
-                esc(ig.nome) +
-                '<div class="muted">' +
-                esc(ig.id) +
-                "</div>" +
-                (ig.exclusao
-                  ? '<div class="tag">exclusão prevista ' + esc(dataTxt(ig.exclusao)) + "</div>"
-                  : "") +
-                "</td><td>" +
-                ig.membros +
-                "</td><td>" +
-                esc(dataTxt(ig.ultimo)) +
-                "</td><td>" +
-                esc(ig.tipo) +
-                '<div class="muted">' +
-                esc(ig.desc) +
-                '</div></td><td class="row-actions">' +
-                '<button class="btn-danger btn-sm" data-del-igreja="' +
-                esc(ig.id) +
-                '" data-nome="' +
-                esc(ig.nome) +
-                '">Excluir</button></td></tr>'
-              );
-            })
-            .join("")
+              .map(function (ig) {
+                return (
+                  "<tr><td>" +
+                  esc(ig.nome) +
+                  '<div class="muted">' +
+                  esc(ig.id) +
+                  "</div>" +
+                  (ig.exclusao
+                    ? '<div class="tag">exclusão prevista ' + esc(dataTxt(ig.exclusao)) + "</div>"
+                    : "") +
+                  "</td><td>" +
+                  ig.membros +
+                  "</td><td>" +
+                  esc(dataTxt(ig.ultimo)) +
+                  "</td><td>" +
+                  esc(ig.tipo) +
+                  '<div class="muted">' +
+                  esc(ig.desc) +
+                  '</div></td><td class="row-actions">' +
+                  '<button class="btn-danger btn-sm" data-del-igreja="' +
+                  esc(ig.id) +
+                  '" data-nome="' +
+                  esc(ig.nome) +
+                  '">Excluir</button></td></tr>'
+                );
+              })
+              .join("")
           : '<tr><td colspan="5">Nenhuma igreja.</td></tr>') +
         "</tbody></table></div>" +
         (orfaos.length
           ? "<h3>Registros órfãos</h3>" +
-          '<div class="card"><table><thead><tr>' +
-          "<th>Quando</th><th>Igreja ID</th><th>Tipo</th><th>Descrição</th><th>Valor</th><th></th>" +
-          "</tr></thead><tbody>" +
-          orfaos
-            .sort(function (a, b) {
-              return tsDe(b) - tsDe(a);
-            })
-            .map(function (r) {
-              return (
-                "<tr><td>" +
-                esc(dataTxt(tsDe(r))) +
-                '</td><td><span class="tag">' +
-                esc(r.igrejaId || "vazio") +
-                "</span></td><td>" +
-                esc(r.tipoMovimento || "—") +
-                " · " +
-                esc(r.tipo || "—") +
-                "</td><td>" +
-                esc(r.descricao || "—") +
-                "</td><td>" +
-                money.format(valorRegistro(r)) +
-                '</td><td class="row-actions">' +
-                '<button class="btn-danger btn-sm" data-del-reg="' +
-                esc(r.id) +
-                '">Excluir</button></td></tr>'
-              );
-            })
-            .join("") +
-          "</tbody></table></div>"
+            '<div class="card"><table><thead><tr>' +
+            "<th>Quando</th><th>ID do registro</th><th>Tipo</th><th>Descrição</th><th>Valor</th><th></th>" +
+            "</tr></thead><tbody>" +
+            orfaos
+              .sort(function (a, b) {
+                return tsDe(b) - tsDe(a);
+              })
+              .map(function (r) {
+                return (
+                  "<tr><td>" +
+                  esc(dataTxt(tsDe(r))) +
+                  '</td><td><span class="tag">' +
+                  esc(r.id || "—") +
+                  "</span></td><td>" +
+                  esc(r.tipoMovimento || "—") +
+                  " · " +
+                  esc(r.tipo || "—") +
+                  "</td><td>" +
+                  esc(r.descricao || "—") +
+                  "</td><td>" +
+                  money.format(valorRegistro(r)) +
+                  '</td><td class="row-actions">' +
+                  '<button class="btn-danger btn-sm" data-del-reg="' +
+                  esc(r.id) +
+                  '">Excluir</button></td></tr>'
+                );
+              })
+              .join("") +
+            "</tbody></table></div>"
           : "") +
         "<h3>Membros</h3>" +
         '<div class="card"><table><thead><tr>' +
@@ -670,22 +520,22 @@
         "</tr></thead><tbody>" +
         (membrosLinhas.length
           ? membrosLinhas
-            .map(function (m) {
-              return (
-                "<tr><td>" +
-                esc(m.email) +
-                "</td><td>" +
-                esc(m.papel) +
-                "</td><td>" +
-                esc(m.igreja) +
-                (m.orfao ? '<div class="tag">igreja órfã</div>' : "") +
-                '</td><td class="row-actions">' +
-                '<button class="btn-danger btn-sm" data-del-membro="' +
-                esc(m.id) +
-                '">Remover</button></td></tr>'
-              );
-            })
-            .join("")
+              .map(function (m) {
+                return (
+                  "<tr><td>" +
+                  esc(m.email) +
+                  "</td><td>" +
+                  esc(m.papel) +
+                  "</td><td>" +
+                  esc(m.igreja) +
+                  (m.orfao ? '<div class="tag">igreja órfã</div>' : "") +
+                  '</td><td class="row-actions">' +
+                  '<button class="btn-danger btn-sm" data-del-membro="' +
+                  esc(m.id) +
+                  '">Remover</button></td></tr>'
+                );
+              })
+              .join("")
           : '<tr><td colspan="4">Nenhum membro.</td></tr>') +
         "</tbody></table></div>";
 
@@ -696,8 +546,8 @@
           abrirModal(
             "Excluir igreja",
             'Isso apaga a igreja "' +
-            nome +
-            '", todos os membros, registros e caixinhas ligados a ela. Não dá para desfazer pelo painel.',
+              nome +
+              '", todos os membros, registros e caixinhas ligados a ela. Não dá para desfazer pelo painel.',
             function () {
               return excluirIgrejaCompleta(id, nome);
             }
@@ -779,5 +629,4 @@
     });
   </script>
 </body>
-
 </html>
