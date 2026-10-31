@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Painel · Tesouraria</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f4f5f7;
+      --ink: #1f2933;
+      --muted: #8a9199;
+      --line: #ececec;
+      --green: #65c556;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+    }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 18px 22px;
+      background: #fff;
+      border-bottom: 1px solid var(--line);
+    }
+    h1 { margin: 0; font-size: 18px; font-weight: 700; }
+    .sub { margin: 2px 0 0; font-size: 12px; color: var(--muted); }
+    button {
+      border: 0;
+      border-radius: 12px;
+      height: 40px;
+      padding: 0 16px;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    .btn { background: var(--green); color: #fff; }
+    .btn-ghost { background: #f4f5f7; color: #333; }
+    main { max-width: 980px; margin: 0 auto; padding: 22px 16px 48px; }
+    .login {
+      max-width: 420px;
+      margin: 48px auto;
+      background: #fff;
+      border-radius: 18px;
+      padding: 28px 22px;
+      text-align: center;
+    }
+    .login h2 { margin: 0 0 8px; font-size: 22px; }
+    .login p { color: var(--muted); font-size: 14px; line-height: 1.5; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .kpi { background: #fff; border-radius: 16px; padding: 16px; }
+    .kpi span { display: block; font-size: 12px; color: var(--muted); font-weight: 300; }
+    .kpi strong { display: block; margin-top: 6px; font-size: 26px; }
+    .card { background: #fff; border-radius: 16px; padding: 6px 14px; margin-bottom: 16px; }
+    h3 {
+      margin: 18px 4px 8px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th, td { text-align: left; padding: 12px 4px; border-bottom: 1px solid #f0f0f0; vertical-align: top; }
+    th { font-size: 11px; font-weight: 500; color: var(--muted); }
+    tr:last-child td { border-bottom: 0; }
+    .err, .aviso {
+      background: #fff3e0;
+      color: #e65100;
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 13px;
+      line-height: 1.45;
+      margin-bottom: 14px;
+    }
+    .muted { color: var(--muted); font-weight: 300; }
+    @media (max-width: 720px) {
+      .grid { grid-template-columns: 1fr; }
+      header { align-items: flex-start; flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>Painel do criador</h1>
+      <p class="sub" id="quem">Tesouraria · somente leitura</p>
+    </div>
+    <div id="acoes"></div>
+  </header>
+  <main id="app"></main>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
+    import {
+      getAuth,
+      GoogleAuthProvider,
+      signInWithPopup,
+      signOut,
+      onAuthStateChanged,
+    } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+    import {
+      getFirestore,
+      collection,
+      getDocs,
+    } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
+
+    const EMAILS_PERMITIDOS = [
+      "hupcontato@gmail.com",
+    ];
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBUzudyPgQYksqyWJLQjpHfMWApAmhSuWs",
+      authDomain: "tesourariaapp-dc9ee.firebaseapp.com",
+      projectId: "tesourariaapp-dc9ee",
+      storageBucket: "tesourariaapp-dc9ee.firebasestorage.app",
+      messagingSenderId: "783811848303",
+      appId: "1:783811848303:web:1e15e2647fad520b3a859a",
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const root = document.getElementById("app");
+    const acoes = document.getElementById("acoes");
+    const quem = document.getElementById("quem");
+
+    const money = new Intl.NumberFormat("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    });
+
+    function emailOk(user) {
+      const e = String(user?.email || "").trim().toLowerCase();
+      return EMAILS_PERMITIDOS.map((x) => x.toLowerCase()).includes(e);
+    }
+
+    function dataTxt(ts) {
+      const n = Number(ts) || 0;
+      if (!n) return "—";
+      const d = new Date(n);
+      if (Number.isNaN(d.getTime())) return "—";
+      return d.toLocaleString("pt-BR");
+    }
+
+    function esc(s) {
+      return String(s ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+    }
+
+    async function entrar() {
+      const provider = new GoogleAuthProvider();
+      await signInWithPopup(auth, provider);
+    }
+
+    async function sair() {
+      await signOut(auth);
+    }
+
+    function telaLogin(msg) {
+      acoes.innerHTML = "";
+      quem.textContent = "Tesouraria · somente leitura";
+      root.innerHTML = `
+        <section class="login">
+          <h2>Acesso do criador</h2>
+          <p>Entre com a conta Google autorizada para ver igrejas, membros e o último lançamento.</p>
+          ${msg ? `<div class="aviso">${esc(msg)}</div>` : ""}
+          <button class="btn" id="btnEntrar">Entrar com Google</button>
+        </section>`;
+      document.getElementById("btnEntrar").onclick = () =>
+        entrar().catch((e) => telaLogin(e?.message || "Não foi possível entrar."));
+    }
+
+    async function carregar() {
+      root.innerHTML = `<p class="muted">Carregando…</p>`;
+      const [igrejasSnap, membrosSnap, registrosSnap] = await Promise.all([
+        getDocs(collection(db, "igrejas")),
+        getDocs(collection(db, "membros")),
+        getDocs(collection(db, "registros")),
+      ]);
+
+      const igrejas = igrejasSnap.docs.map((d) => ({ id: d.id, ...d.data() }));
+      const membros = membrosSnap.docs.map((d) => ({ id: d.id, ...d.data() }));
+      const registros = registrosSnap.docs.map((d) => ({ id: d.id, ...d.data() }));
+
+      const nomeIgreja = new Map(igrejas.map((i) => [i.id, i.nome || "Igreja"]));
+      const membrosPorIgreja = {};
+      membros.forEach((m) => {
+        const id = m.igrejaId || "—";
+        membrosPorIgreja[id] = (membrosPorIgreja[id] || 0) + 1;
+      });
+
+      const ultimoPorIgreja = {};
+      registros.forEach((r) => {
+        const ts = Number(r.reg || r.data || r.createdAt || 0) || 0;
+        const id = r.igrejaId || "";
+        if (!id) return;
+        if (!ultimoPorIgreja[id] || ts > ultimoPorIgreja[id].ts) {
+          ultimoPorIgreja[id] = { ts, item: r };
+        }
+      });
+
+      const ultimoGeral = registros.reduce((acc, r) => {
+        const ts = Number(r.reg || r.data || r.createdAt || 0) || 0;
+        if (!acc || ts > acc.ts) return { ts, item: r };
+        return acc;
+      }, null);
+
+      const linhasIgreja = igrejas
+        .map((ig) => {
+          const ult = ultimoPorIgreja[ig.id];
+          return {
+            nome: ig.nome || "Igreja",
+            membros: membrosPorIgreja[ig.id] || 0,
+            ultimo: ult?.ts || 0,
+            tipo: ult?.item?.tipo || "—",
+            desc: ult?.item?.descricao || "—",
+            exclusao: Number(ig.exclusaoPrevistaEm) || 0,
+          };
+        })
+        .sort((a, b) => b.ultimo - a.ultimo);
+
+      const ult = ultimoGeral?.item;
+      const ultIgreja = ult ? nomeIgreja.get(ult.igrejaId) || ult.igrejaId : "—";
+      const ultValor =
+        ult?.tipoMovimento === "saida"
+          ? Number(ult.valorPagoTotal || ult.valorTotal || 0)
+          : Number(ult.valorRecebidoTotal || ult.valorTotal || 0);
+
+      root.innerHTML = `
+        <div class="grid">
+          <div class="kpi"><span>Igrejas</span><strong>${igrejas.length}</strong></div>
+          <div class="kpi"><span>Membros</span><strong>${membros.length}</strong></div>
+          <div class="kpi"><span>Registros</span><strong>${registros.length}</strong></div>
+        </div>
+        <h3>Último lançamento</h3>
+        <div class="card">
+          <table>
+            <tr><th>Quando</th><td>${esc(dataTxt(ultimoGeral?.ts))}</td></tr>
+            <tr><th>Igreja</th><td>${esc(ultIgreja)}</td></tr>
+            <tr><th>Tipo</th><td>${esc(ult?.tipoMovimento || "—")} · ${esc(ult?.tipo || "—")}</td></tr>
+            <tr><th>Descrição</th><td>${esc(ult?.descricao || "—")}</td></tr>
+            <tr><th>Valor</th><td>${ult ? money.format(ultValor) : "—"}</td></tr>
+          </table>
+        </div>
+        <h3>Igrejas</h3>
+        <div class="card">
+          <table>
+            <thead>
+              <tr>
+                <th>Igreja</th>
+                <th>Membros</th>
+                <th>Último registro</th>
+                <th>O quê</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${
+                linhasIgreja.length
+                  ? linhasIgreja
+                      .map(
+                        (ig) => `<tr>
+                    <td>${esc(ig.nome)}${
+                          ig.exclusao
+                            ? `<div class="muted">exclusão ${esc(dataTxt(ig.exclusao))}</div>`
+                            : ""
+                        }</td>
+                    <td>${ig.membros}</td>
+                    <td>${esc(dataTxt(ig.ultimo))}</td>
+                    <td>${esc(ig.tipo)}<div class="muted">${esc(ig.desc)}</div></td>
+                  </tr>`
+                      )
+                      .join("")
+                  : `<tr><td colspan="4">Nenhuma igreja.</td></tr>`
+              }
+            </tbody>
+          </table>
+        </div>`;
+    }
+
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        telaLogin("");
+        return;
+      }
+      if (!emailOk(user)) {
+        await sair();
+        telaLogin("Esta conta não tem acesso ao painel.");
+        return;
+      }
+      quem.textContent = user.email;
+      acoes.innerHTML = `<button class="btn-ghost" id="btnSair">Sair</button>`;
+      document.getElementById("btnSair").onclick = () => sair();
+      try {
+        await carregar();
+      } catch (e) {
+        root.innerHTML = `<div class="err">Não foi possível ler os dados (${esc(
+          e?.code || e?.message || "erro"
+        )}). O login funcionou, mas o Firestore ainda não deixa esta página ler todas as igrejas. Me envie suas regras que eu ajusto.</div>`;
+      }
+    });
+  </script>
+</body>
+</html>
