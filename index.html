@@ -15,6 +15,9 @@
       --muted: #8a9199;
       --line: #ececec;
       --green: #65c556;
+      --red: #c62828;
+      --orange: #e65100;
+      --warn-bg: #fff3e0;
     }
 
     * {
@@ -36,6 +39,9 @@
       padding: 18px 22px;
       background: #fff;
       border-bottom: 1px solid var(--line);
+      position: sticky;
+      top: 0;
+      z-index: 10;
     }
 
     h1 {
@@ -53,12 +59,17 @@
     button {
       border: 0;
       border-radius: 12px;
-      height: 40px;
-      padding: 0 16px;
+      height: 36px;
+      padding: 0 14px;
       font-family: inherit;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 500;
       cursor: pointer;
+    }
+
+    button:disabled {
+      opacity: 0.55;
+      cursor: default;
     }
 
     .btn {
@@ -71,10 +82,22 @@
       color: #333;
     }
 
+    .btn-danger {
+      background: #ffebee;
+      color: var(--red);
+    }
+
+    .btn-sm {
+      height: 30px;
+      padding: 0 10px;
+      font-size: 12px;
+      border-radius: 10px;
+    }
+
     main {
-      max-width: 980px;
+      max-width: 1040px;
       margin: 0 auto;
-      padding: 22px 16px 48px;
+      padding: 22px 16px 56px;
     }
 
     .login {
@@ -99,7 +122,7 @@
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: 10px;
       margin-bottom: 16px;
     }
@@ -120,7 +143,11 @@
     .kpi strong {
       display: block;
       margin-top: 6px;
-      font-size: 26px;
+      font-size: 24px;
+    }
+
+    .kpi.warn strong {
+      color: var(--orange);
     }
 
     .card {
@@ -132,7 +159,7 @@
 
     h3 {
       margin: 18px 4px 8px;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 500;
       color: #666;
       text-transform: uppercase;
@@ -148,7 +175,7 @@
     th,
     td {
       text-align: left;
-      padding: 12px 4px;
+      padding: 12px 6px;
       border-bottom: 1px solid #f0f0f0;
       vertical-align: top;
     }
@@ -163,10 +190,13 @@
       border-bottom: 0;
     }
 
+    .row-actions {
+      white-space: nowrap;
+    }
+
     .err,
-    .aviso {
-      background: #fff3e0;
-      color: #e65100;
+    .aviso,
+    .ok {
       border-radius: 12px;
       padding: 12px 14px;
       font-size: 13px;
@@ -174,19 +204,94 @@
       margin-bottom: 14px;
     }
 
+    .err,
+    .aviso {
+      background: var(--warn-bg);
+      color: var(--orange);
+    }
+
+    .ok {
+      background: #e8f5e9;
+      color: #2e7d32;
+    }
+
     .muted {
       color: var(--muted);
       font-weight: 300;
+      font-size: 12px;
     }
 
-    @media (max-width: 720px) {
+    .tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 2px 8px;
+      border-radius: 8px;
+      background: #fff3e0;
+      color: var(--orange);
+      margin-top: 4px;
+    }
+
+    .tag-ok {
+      background: #e8f5e9;
+      color: #2e7d32;
+    }
+
+    .modal-bg {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+      padding: 16px;
+    }
+
+    .modal {
+      width: 100%;
+      max-width: 420px;
+      background: #fff;
+      border-radius: 18px;
+      padding: 20px;
+    }
+
+    .modal h4 {
+      margin: 0 0 8px;
+      font-size: 17px;
+    }
+
+    .modal p {
+      margin: 0 0 16px;
+      font-size: 14px;
+      color: #555;
+      line-height: 1.45;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 800px) {
       .grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr 1fr;
       }
 
       header {
-        align-items: flex-start;
         flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .grid {
+        grid-template-columns: 1fr;
       }
     }
   </style>
@@ -196,11 +301,22 @@
   <header>
     <div>
       <h1>Painel do criador</h1>
-      <p class="sub" id="quem">Tesouraria · somente leitura</p>
+      <p class="sub" id="quem">Tesouraria · leitura e exclusão</p>
     </div>
-    <div id="acoes"></div>
+    <div id="acoes" style="display:flex;gap:8px;flex-wrap:wrap;"></div>
   </header>
   <main id="app"></main>
+
+  <div id="modalRoot" class="modal-bg hidden">
+    <div class="modal">
+      <h4 id="modalTitle">Confirmar</h4>
+      <p id="modalMsg"></p>
+      <div class="modal-actions">
+        <button class="btn-ghost" id="modalCancel">Cancelar</button>
+        <button class="btn-danger" id="modalOk">Excluir</button>
+      </div>
+    </div>
+  </div>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
@@ -215,27 +331,43 @@
       getFirestore,
       collection,
       getDocs,
+      doc,
+      deleteDoc,
+      query,
+      where,
     } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 
+    // Troque pelo seu e-mail
     const EMAILS_PERMITIDOS = [
       "hupcontato@gmail.com",
     ];
 
+    // MESMO projeto do app
     const firebaseConfig = {
       apiKey: "AIzaSyDJFnhKXoUqKSIzsffYWkJ7qGIuEUhlUFs",
       authDomain: "psh-admin-8c0f7.firebaseapp.com",
       projectId: "psh-admin-8c0f7",
       storageBucket: "psh-admin-8c0f7.firebasestorage.app",
       messagingSenderId: "53234150017",
-      appId: "1:53234150017:web:6e64b2536d79dff74b7b80",
+      appId: "1:53234150017:web:6e64b2536d79dff74b7b80"
+    };
     };
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
+
     const root = document.getElementById("app");
     const acoes = document.getElementById("acoes");
     const quem = document.getElementById("quem");
+    const modalRoot = document.getElementById("modalRoot");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalMsg = document.getElementById("modalMsg");
+    const modalCancel = document.getElementById("modalCancel");
+    const modalOk = document.getElementById("modalOk");
+
+    let cache = { igrejas: [], membros: [], registros: [] };
+    let pendingAction = null;
 
     const money = new Intl.NumberFormat("pt-BR", {
       style: "currency",
@@ -255,11 +387,89 @@
       return d.toLocaleString("pt-BR");
     }
 
+    function tsDe(item) {
+      return Number(item?.reg || item?.data || item?.createdAt || 0) || 0;
+    }
+
     function esc(s) {
       return String(s ?? "")
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;");
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function valorRegistro(r) {
+      if (r?.tipoMovimento === "saida") {
+        return Number(r.valorPagoTotal || r.valorTotal || 0) || 0;
+      }
+      return Number(r.valorRecebidoTotal || r.valorTotal || 0) || 0;
+    }
+
+    function nomeIgrejaPorId(id, mapa) {
+      if (!id) return { nome: "Sem igreja", orfao: true };
+      const n = mapa.get(id);
+      if (n) return { nome: n, orfao: false };
+      return { nome: "Igreja não encontrada", orfao: true, id };
+    }
+
+    function abrirModal(titulo, mensagem, onConfirm) {
+      modalTitle.textContent = titulo;
+      modalMsg.textContent = mensagem;
+      pendingAction = onConfirm;
+      modalRoot.classList.remove("hidden");
+    }
+
+    function fecharModal() {
+      pendingAction = null;
+      modalRoot.classList.add("hidden");
+    }
+
+    modalCancel.onclick = () => fecharModal();
+    modalOk.onclick = async () => {
+      const fn = pendingAction;
+      fecharModal();
+      if (fn) {
+        try {
+          await fn();
+        } catch (e) {
+          alert("Erro: " + (e?.message || e?.code || "falha"));
+        }
+      }
+    };
+    modalRoot.addEventListener("click", (e) => {
+      if (e.target === modalRoot) fecharModal();
+    });
+
+    async function apagarQuery(colName, field, value) {
+      const q = query(collection(db, colName), where(field, "==", value));
+      const snap = await getDocs(q);
+      await Promise.all(snap.docs.map((d) => deleteDoc(d.ref)));
+      return snap.size;
+    }
+
+    async function excluirIgrejaCompleta(igrejaId, nome) {
+      if (!igrejaId) return;
+      const nM = await apagarQuery("membros", "igrejaId", igrejaId);
+      const nR = await apagarQuery("registros", "igrejaId", igrejaId);
+      try {
+        await apagarQuery("caixinhas", "igrejaId", igrejaId);
+      } catch (_) { }
+      await deleteDoc(doc(db, "igrejas", igrejaId));
+      await carregar(true);
+      alert("Igreja \"" + nome + "\" excluída.\nMembros: " + nM + "\nRegistros: " + nR);
+    }
+
+    async function excluirRegistro(regId) {
+      if (!regId) return;
+      await deleteDoc(doc(db, "registros", regId));
+      await carregar(true);
+    }
+
+    async function excluirMembro(membroId) {
+      if (!membroId) return;
+      await deleteDoc(doc(db, "membros", membroId));
+      await carregar(true);
     }
 
     async function entrar() {
@@ -273,31 +483,22 @@
 
     function telaLogin(msg) {
       acoes.innerHTML = "";
-      quem.textContent = "Tesouraria · somente leitura";
-      root.innerHTML = `
-        <section class="login">
-          <h2>Acesso do criador</h2>
-          <p>Entre com a conta Google autorizada para ver igrejas, membros e o último lançamento.</p>
-          ${msg ? `<div class="aviso">${esc(msg)}</div>` : ""}
-          <button class="btn" id="btnEntrar">Entrar com Google</button>
-        </section>`;
+      quem.textContent = "Tesouraria · leitura e exclusão";
+      root.innerHTML =
+        '<section class="login">' +
+        "<h2>Acesso do criador</h2>" +
+        "<p>Entre com a conta Google autorizada.</p>" +
+        (msg ? '<div class="aviso">' + esc(msg) + "</div>" : "") +
+        '<button class="btn" id="btnEntrar">Entrar com Google</button>' +
+        "</section>";
       document.getElementById("btnEntrar").onclick = () =>
         entrar().catch((e) => telaLogin(e?.message || "Não foi possível entrar."));
     }
 
-    async function carregar() {
-      root.innerHTML = `<p class="muted">Carregando…</p>`;
-      const [igrejasSnap, membrosSnap, registrosSnap] = await Promise.all([
-        getDocs(collection(db, "igrejas")),
-        getDocs(collection(db, "membros")),
-        getDocs(collection(db, "registros")),
-      ]);
+    function render(data) {
+      const { igrejas, membros, registros } = data;
+      const mapaNome = new Map(igrejas.map((i) => [i.id, i.nome || "Igreja"]));
 
-      const igrejas = igrejasSnap.docs.map((d) => ({ id: d.id, ...d.data() }));
-      const membros = membrosSnap.docs.map((d) => ({ id: d.id, ...d.data() }));
-      const registros = registrosSnap.docs.map((d) => ({ id: d.id, ...d.data() }));
-
-      const nomeIgreja = new Map(igrejas.map((i) => [i.id, i.nome || "Igreja"]));
       const membrosPorIgreja = {};
       membros.forEach((m) => {
         const id = m.igrejaId || "—";
@@ -305,89 +506,247 @@
       });
 
       const ultimoPorIgreja = {};
+      const orfaos = [];
+
       registros.forEach((r) => {
-        const ts = Number(r.reg || r.data || r.createdAt || 0) || 0;
+        const ts = tsDe(r);
         const id = r.igrejaId || "";
-        if (!id) return;
+        if (!id || !mapaNome.has(id)) {
+          orfaos.push(r);
+          return;
+        }
         if (!ultimoPorIgreja[id] || ts > ultimoPorIgreja[id].ts) {
           ultimoPorIgreja[id] = { ts, item: r };
         }
       });
 
       const ultimoGeral = registros.reduce((acc, r) => {
-        const ts = Number(r.reg || r.data || r.createdAt || 0) || 0;
+        const ts = tsDe(r);
         if (!acc || ts > acc.ts) return { ts, item: r };
         return acc;
       }, null);
 
+      const ult = ultimoGeral?.item;
+      const infoIgrejaUlt = nomeIgrejaPorId(ult?.igrejaId, mapaNome);
+      const ultValor = ult ? valorRegistro(ult) : 0;
+
+      let avisoInconsistencia = "";
+      if (ult && infoIgrejaUlt.orfao) {
+        avisoInconsistencia =
+          "O último lançamento (" +
+          dataTxt(ultimoGeral.ts) +
+          ") aponta para uma igreja que não existe na coleção igrejas (ID: " +
+          (ult.igrejaId || "vazio") +
+          "). Por isso ele não aparece na tabela de igrejas.";
+      }
+
       const linhasIgreja = igrejas
         .map((ig) => {
-          const ult = ultimoPorIgreja[ig.id];
+          const ultIg = ultimoPorIgreja[ig.id];
           return {
+            id: ig.id,
             nome: ig.nome || "Igreja",
             membros: membrosPorIgreja[ig.id] || 0,
-            ultimo: ult?.ts || 0,
-            tipo: ult?.item?.tipo || "—",
-            desc: ult?.item?.descricao || "—",
+            ultimo: ultIg?.ts || 0,
+            tipo: ultIg?.item?.tipo || "—",
+            desc: ultIg?.item?.descricao || "—",
             exclusao: Number(ig.exclusaoPrevistaEm) || 0,
           };
         })
         .sort((a, b) => b.ultimo - a.ultimo);
 
-      const ult = ultimoGeral?.item;
-      const ultIgreja = ult ? nomeIgreja.get(ult.igrejaId) || ult.igrejaId : "—";
-      const ultValor =
-        ult?.tipoMovimento === "saida"
-          ? Number(ult.valorPagoTotal || ult.valorTotal || 0)
-          : Number(ult.valorRecebidoTotal || ult.valorTotal || 0);
+      const membrosLinhas = membros
+        .map((m) => {
+          const info = nomeIgrejaPorId(m.igrejaId, mapaNome);
+          return {
+            id: m.id,
+            email: m.email || m.uid || "—",
+            papel: m.papel || "—",
+            igreja: info.nome,
+            orfao: info.orfao,
+            igrejaId: m.igrejaId || "",
+          };
+        })
+        .sort((a, b) => String(a.email).localeCompare(String(b.email)));
 
-      root.innerHTML = `
-        <div class="grid">
-          <div class="kpi"><span>Igrejas</span><strong>${igrejas.length}</strong></div>
-          <div class="kpi"><span>Membros</span><strong>${membros.length}</strong></div>
-          <div class="kpi"><span>Registros</span><strong>${registros.length}</strong></div>
-        </div>
-        <h3>Último lançamento</h3>
-        <div class="card">
-          <table>
-            <tr><th>Quando</th><td>${esc(dataTxt(ultimoGeral?.ts))}</td></tr>
-            <tr><th>Igreja</th><td>${esc(ultIgreja)}</td></tr>
-            <tr><th>Tipo</th><td>${esc(ult?.tipoMovimento || "—")} · ${esc(ult?.tipo || "—")}</td></tr>
-            <tr><th>Descrição</th><td>${esc(ult?.descricao || "—")}</td></tr>
-            <tr><th>Valor</th><td>${ult ? money.format(ultValor) : "—"}</td></tr>
-          </table>
-        </div>
-        <h3>Igrejas</h3>
-        <div class="card">
-          <table>
-            <thead>
-              <tr>
-                <th>Igreja</th>
-                <th>Membros</th>
-                <th>Último registro</th>
-                <th>O quê</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${linhasIgreja.length
+      root.innerHTML =
+        '<div class="grid">' +
+        '<div class="kpi"><span>Igrejas</span><strong>' + igrejas.length + "</strong></div>" +
+        '<div class="kpi"><span>Membros</span><strong>' + membros.length + "</strong></div>" +
+        '<div class="kpi"><span>Registros</span><strong>' + registros.length + "</strong></div>" +
+        '<div class="kpi ' + (orfaos.length ? "warn" : "") + '"><span>Registros órfãos</span><strong>' + orfaos.length + "</strong></div>" +
+        "</div>" +
+        (avisoInconsistencia ? '<div class="aviso">' + esc(avisoInconsistencia) + "</div>" : "") +
+        (orfaos.length
+          ? '<div class="aviso">Há ' + orfaos.length + " registro(s) com igreja inexistente ou sem igrejaId. Eles contam no “último lançamento” global, mas não entram na coluna “Último registro” da tabela de igrejas.</div>"
+          : '<div class="ok">Nenhum registro órfão detectado.</div>') +
+        "<h3>Último lançamento</h3>" +
+        '<div class="card"><table>' +
+        "<tr><th>Quando</th><td>" + esc(dataTxt(ultimoGeral?.ts)) + "</td></tr>" +
+        "<tr><th>Igreja</th><td>" +
+        esc(infoIgrejaUlt.nome) +
+        (infoIgrejaUlt.orfao
+          ? '<div class="tag">órfão · ID ' + esc(infoIgrejaUlt.id || ult?.igrejaId || "—") + "</div>"
+          : '<div class="muted">' + esc(ult?.igrejaId || "") + "</div>") +
+        "</td></tr>" +
+        "<tr><th>Tipo</th><td>" + esc(ult?.tipoMovimento || "—") + " · " + esc(ult?.tipo || "—") + "</td></tr>" +
+        "<tr><th>Descrição</th><td>" + esc(ult?.descricao || "—") + "</td></tr>" +
+        "<tr><th>Valor</th><td>" + (ult ? money.format(ultValor) : "—") + "</td></tr>" +
+        '<tr><th>Ações</th><td class="row-actions">' +
+        (ult?.id
+          ? '<button class="btn-danger btn-sm" data-del-reg="' + esc(ult.id) + '">Excluir este registro</button>'
+          : "—") +
+        "</td></tr>" +
+        "</table></div>" +
+        "<h3>Igrejas</h3>" +
+        '<div class="card"><table><thead><tr>' +
+        "<th>Igreja</th><th>Membros</th><th>Último registro</th><th>O quê</th><th></th>" +
+        "</tr></thead><tbody>" +
+        (linhasIgreja.length
           ? linhasIgreja
-            .map(
-              (ig) => `<tr>
-                    <td>${esc(ig.nome)}${ig.exclusao
-                  ? `<div class="muted">exclusão ${esc(dataTxt(ig.exclusao))}</div>`
-                  : ""
-                }</td>
-                    <td>${ig.membros}</td>
-                    <td>${esc(dataTxt(ig.ultimo))}</td>
-                    <td>${esc(ig.tipo)}<div class="muted">${esc(ig.desc)}</div></td>
-                  </tr>`
-            )
+            .map(function (ig) {
+              return (
+                "<tr><td>" +
+                esc(ig.nome) +
+                '<div class="muted">' +
+                esc(ig.id) +
+                "</div>" +
+                (ig.exclusao
+                  ? '<div class="tag">exclusão prevista ' + esc(dataTxt(ig.exclusao)) + "</div>"
+                  : "") +
+                "</td><td>" +
+                ig.membros +
+                "</td><td>" +
+                esc(dataTxt(ig.ultimo)) +
+                "</td><td>" +
+                esc(ig.tipo) +
+                '<div class="muted">' +
+                esc(ig.desc) +
+                '</div></td><td class="row-actions">' +
+                '<button class="btn-danger btn-sm" data-del-igreja="' +
+                esc(ig.id) +
+                '" data-nome="' +
+                esc(ig.nome) +
+                '">Excluir</button></td></tr>'
+              );
+            })
             .join("")
-          : `<tr><td colspan="4">Nenhuma igreja.</td></tr>`
-        }
-            </tbody>
-          </table>
-        </div>`;
+          : '<tr><td colspan="5">Nenhuma igreja.</td></tr>') +
+        "</tbody></table></div>" +
+        (orfaos.length
+          ? "<h3>Registros órfãos</h3>" +
+          '<div class="card"><table><thead><tr>' +
+          "<th>Quando</th><th>Igreja ID</th><th>Tipo</th><th>Descrição</th><th>Valor</th><th></th>" +
+          "</tr></thead><tbody>" +
+          orfaos
+            .sort(function (a, b) {
+              return tsDe(b) - tsDe(a);
+            })
+            .map(function (r) {
+              return (
+                "<tr><td>" +
+                esc(dataTxt(tsDe(r))) +
+                '</td><td><span class="tag">' +
+                esc(r.igrejaId || "vazio") +
+                "</span></td><td>" +
+                esc(r.tipoMovimento || "—") +
+                " · " +
+                esc(r.tipo || "—") +
+                "</td><td>" +
+                esc(r.descricao || "—") +
+                "</td><td>" +
+                money.format(valorRegistro(r)) +
+                '</td><td class="row-actions">' +
+                '<button class="btn-danger btn-sm" data-del-reg="' +
+                esc(r.id) +
+                '">Excluir</button></td></tr>'
+              );
+            })
+            .join("") +
+          "</tbody></table></div>"
+          : "") +
+        "<h3>Membros</h3>" +
+        '<div class="card"><table><thead><tr>' +
+        "<th>E-mail / UID</th><th>Papel</th><th>Igreja</th><th></th>" +
+        "</tr></thead><tbody>" +
+        (membrosLinhas.length
+          ? membrosLinhas
+            .map(function (m) {
+              return (
+                "<tr><td>" +
+                esc(m.email) +
+                "</td><td>" +
+                esc(m.papel) +
+                "</td><td>" +
+                esc(m.igreja) +
+                (m.orfao ? '<div class="tag">igreja órfã</div>' : "") +
+                '</td><td class="row-actions">' +
+                '<button class="btn-danger btn-sm" data-del-membro="' +
+                esc(m.id) +
+                '">Remover</button></td></tr>'
+              );
+            })
+            .join("")
+          : '<tr><td colspan="4">Nenhum membro.</td></tr>') +
+        "</tbody></table></div>";
+
+      root.querySelectorAll("[data-del-igreja]").forEach(function (btn) {
+        btn.onclick = function () {
+          var id = btn.getAttribute("data-del-igreja");
+          var nome = btn.getAttribute("data-nome") || id;
+          abrirModal(
+            "Excluir igreja",
+            'Isso apaga a igreja "' +
+            nome +
+            '", todos os membros, registros e caixinhas ligados a ela. Não dá para desfazer pelo painel.',
+            function () {
+              return excluirIgrejaCompleta(id, nome);
+            }
+          );
+        };
+      });
+
+      root.querySelectorAll("[data-del-reg]").forEach(function (btn) {
+        btn.onclick = function () {
+          var id = btn.getAttribute("data-del-reg");
+          abrirModal(
+            "Excluir registro",
+            "Remover este registro do Firestore? Ação imediata.",
+            function () {
+              return excluirRegistro(id);
+            }
+          );
+        };
+      });
+
+      root.querySelectorAll("[data-del-membro]").forEach(function (btn) {
+        btn.onclick = function () {
+          var id = btn.getAttribute("data-del-membro");
+          abrirModal(
+            "Remover membro",
+            "Remove o vínculo deste e-mail com a igreja. A conta do Authentication não é apagada.",
+            function () {
+              return excluirMembro(id);
+            }
+          );
+        };
+      });
+    }
+
+    async function carregar(silencioso) {
+      if (!silencioso) root.innerHTML = '<p class="muted">Carregando…</p>';
+      const [igrejasSnap, membrosSnap, registrosSnap] = await Promise.all([
+        getDocs(collection(db, "igrejas")),
+        getDocs(collection(db, "membros")),
+        getDocs(collection(db, "registros")),
+      ]);
+
+      cache = {
+        igrejas: igrejasSnap.docs.map((d) => ({ id: d.id, ...d.data() })),
+        membros: membrosSnap.docs.map((d) => ({ id: d.id, ...d.data() })),
+        registros: registrosSnap.docs.map((d) => ({ id: d.id, ...d.data() })),
+      };
+      render(cache);
     }
 
     onAuthStateChanged(auth, async (user) => {
@@ -401,14 +760,22 @@
         return;
       }
       quem.textContent = user.email;
-      acoes.innerHTML = `<button class="btn-ghost" id="btnSair">Sair</button>`;
-      document.getElementById("btnSair").onclick = () => sair();
+      acoes.innerHTML =
+        '<button class="btn-ghost" id="btnRefresh">Atualizar</button>' +
+        '<button class="btn-ghost" id="btnSair">Sair</button>';
+      document.getElementById("btnSair").onclick = function () {
+        sair();
+      };
+      document.getElementById("btnRefresh").onclick = function () {
+        carregar();
+      };
       try {
         await carregar();
       } catch (e) {
-        root.innerHTML = `<div class="err">Não foi possível ler os dados (${esc(
-          e?.code || e?.message || "erro"
-        )}). O login funcionou, mas o Firestore ainda não deixa esta página ler todas as igrejas. Me envie suas regras que eu ajusto.</div>`;
+        root.innerHTML =
+          '<div class="err">Não foi possível ler os dados (' +
+          esc(e?.code || e?.message || "erro") +
+          "). Confira regras do Firestore e Authorized domains.</div>";
       }
     });
   </script>
