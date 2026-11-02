@@ -9,15 +9,15 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg: #f3f4f6;
-      --card: #ffffff;
-      --ink: #111827;
+      --bg: #f5f6f8;
+      --card: #fff;
+      --ink: #1a1d21;
       --muted: #6b7280;
-      --line: #e5e7eb;
+      --line: #e8eaed;
       --green: #65c556;
-      --red: #dc2626;
-      --orange: #d97706;
-      --soft: #f9fafb;
+      --red: #c62828;
+      --orange: #e65100;
+      --soft: #f0f1f3;
     }
     * { box-sizing: border-box; }
     body {
@@ -28,71 +28,70 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    /* Header */
     .top {
       position: sticky;
       top: 0;
       z-index: 20;
       background: var(--card);
       border-bottom: 1px solid var(--line);
-      padding: 12px 16px;
-      padding-top: max(12px, env(safe-area-inset-top));
+      padding: 14px 16px 0;
+      padding-top: max(14px, env(safe-area-inset-top));
     }
     .top-row {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: space-between;
       gap: 12px;
+      margin-bottom: 12px;
     }
     .top h1 {
       margin: 0;
       font-size: 18px;
       font-weight: 700;
+      letter-spacing: -0.2px;
     }
     .top .email {
-      margin: 2px 0 0;
+      margin: 3px 0 0;
       font-size: 12px;
       color: var(--muted);
       word-break: break-all;
     }
-    .top-actions { display: flex; gap: 8px; }
+    .top-actions { display: flex; gap: 8px; flex-shrink: 0; }
 
-    /* Tabs */
     .tabs {
       display: flex;
-      gap: 6px;
-      margin-top: 12px;
+      gap: 0;
+      margin: 0 -16px;
+      padding: 0 16px;
+      border-top: 1px solid var(--line);
       overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
       scrollbar-width: none;
     }
     .tabs::-webkit-scrollbar { display: none; }
     .tab {
-      flex: 0 0 auto;
+      flex: 1 0 auto;
+      min-width: 72px;
       border: 0;
-      background: var(--soft);
+      background: transparent;
       color: var(--muted);
-      height: 34px;
-      padding: 0 14px;
-      border-radius: 999px;
+      height: 42px;
+      padding: 0 12px;
       font: inherit;
       font-size: 13px;
       font-weight: 500;
       cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
     }
     .tab.active {
-      background: var(--green);
-      color: #fff;
+      color: var(--ink);
+      border-bottom-color: var(--green);
+      font-weight: 700;
     }
 
-    /* Buttons */
-    button {
-      font-family: inherit;
-      border: 0;
-      cursor: pointer;
-    }
+    button { font-family: inherit; border: 0; cursor: pointer; }
     .btn {
-      height: 36px;
+      height: 34px;
       padding: 0 12px;
       border-radius: 10px;
       font-size: 13px;
@@ -100,14 +99,8 @@
       background: var(--soft);
       color: var(--ink);
     }
-    .btn-primary {
-      background: var(--green);
-      color: #fff;
-    }
-    .btn-danger {
-      background: #fef2f2;
-      color: var(--red);
-    }
+    .btn-primary { background: var(--green); color: #fff; }
+    .btn-danger { background: #fdecea; color: var(--red); }
     .btn-block {
       width: 100%;
       height: 48px;
@@ -120,99 +113,95 @@
       height: 40px;
       border-radius: 12px;
       background: transparent;
-      color: var(--muted);
+      color: #9ca3af;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
     }
-    .icon-btn.danger:active,
-    .icon-btn.danger:hover {
-      background: #fef2f2;
-      color: var(--red);
-    }
+    .icon-btn:active { background: #fdecea; color: var(--red); }
 
     main {
-      max-width: 560px;
+      max-width: 520px;
       margin: 0 auto;
       padding: 16px;
-      padding-bottom: max(28px, env(safe-area-inset-bottom));
+      padding-bottom: max(32px, env(safe-area-inset-bottom));
     }
 
-    /* Login */
     .login {
-      margin-top: 40px;
+      margin-top: 48px;
       background: var(--card);
       border-radius: 20px;
-      padding: 28px 20px;
+      padding: 32px 22px;
       text-align: center;
     }
     .login h2 { margin: 0 0 8px; font-size: 22px; }
     .login p {
-      margin: 0 0 20px;
+      margin: 0 0 22px;
       color: var(--muted);
       font-size: 14px;
       line-height: 1.5;
     }
 
-    /* KPI */
     .kpis {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-bottom: 16px;
+      gap: 8px;
+      margin-bottom: 18px;
     }
     .kpi {
       background: var(--card);
-      border-radius: 16px;
-      padding: 14px;
+      border-radius: 14px;
+      padding: 12px 14px;
     }
     .kpi label {
       display: block;
-      font-size: 12px;
+      font-size: 11px;
       color: var(--muted);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
     }
     .kpi strong {
       display: block;
-      margin-top: 6px;
+      margin-top: 4px;
       font-size: 22px;
       font-weight: 700;
+      letter-spacing: -0.5px;
     }
     .kpi.warn strong { color: var(--orange); }
 
-    /* Banner */
     .banner {
-      border-radius: 14px;
-      padding: 12px 14px;
+      border-radius: 12px;
+      padding: 11px 13px;
       font-size: 13px;
-      line-height: 1.45;
-      margin-bottom: 14px;
+      line-height: 1.4;
+      margin-bottom: 16px;
     }
-    .banner.ok { background: #ecfdf5; color: #047857; }
-    .banner.warn { background: #fffbeb; color: #b45309; }
-    .banner.err { background: #fef2f2; color: #b91c1c; }
+    .banner.ok { background: #e8f5e9; color: #2e7d32; }
+    .banner.warn { background: #fff3e0; color: #e65100; }
+    .banner.err { background: #fdecea; color: #c62828; }
 
-    /* Section */
     .section-title {
-      margin: 8px 2px 10px;
-      font-size: 13px;
+      margin: 4px 2px 10px;
+      font-size: 12px;
       font-weight: 700;
       color: var(--muted);
       text-transform: uppercase;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.05em;
     }
 
-    /* Cards list */
-    .stack { display: flex; flex-direction: column; gap: 10px; }
+    .stack { display: flex; flex-direction: column; gap: 8px; }
+
     .card {
       background: var(--card);
-      border-radius: 16px;
+      border-radius: 14px;
       padding: 14px;
     }
     .card-row {
       display: flex;
       align-items: flex-start;
-      gap: 10px;
+      gap: 8px;
     }
     .card-body { flex: 1; min-width: 0; }
     .card-title {
@@ -222,38 +211,43 @@
       word-break: break-word;
     }
     .card-sub {
-      margin-top: 4px;
+      margin-top: 3px;
       font-size: 13px;
       color: var(--muted);
-      line-height: 1.4;
+      line-height: 1.35;
       word-break: break-word;
     }
     .card-foot {
       margin-top: 10px;
-      padding-top: 10px;
-      border-top: 1px solid var(--line);
       display: flex;
       flex-wrap: wrap;
-      gap: 8px 12px;
+      align-items: center;
+      gap: 8px 14px;
       font-size: 12px;
       color: var(--muted);
+    }
+    .card-valor {
+      font-weight: 700;
+      color: var(--ink);
+      font-size: 13px;
     }
     .pill {
       display: inline-block;
       padding: 2px 8px;
-      border-radius: 999px;
+      border-radius: 6px;
       background: var(--soft);
       font-size: 11px;
       font-weight: 500;
       color: var(--muted);
     }
     .pill.alert {
-      background: #fffbeb;
+      background: #fff3e0;
       color: var(--orange);
     }
+
     .empty {
       background: var(--card);
-      border-radius: 16px;
+      border-radius: 14px;
       padding: 28px 16px;
       text-align: center;
       color: var(--muted);
@@ -261,7 +255,6 @@
     }
     .hidden { display: none !important; }
 
-    /* Modal */
     .modal-bg {
       position: fixed;
       inset: 0;
@@ -278,25 +271,19 @@
     }
     .modal {
       width: 100%;
-      max-width: 400px;
+      max-width: 380px;
       background: #fff;
       border-radius: 18px;
-      padding: 20px;
+      padding: 22px 20px;
     }
-    .modal h3 {
-      margin: 0 0 8px;
-      font-size: 17px;
-    }
+    .modal h3 { margin: 0 0 8px; font-size: 17px; }
     .modal p {
       margin: 0 0 18px;
       font-size: 14px;
       color: var(--muted);
       line-height: 1.45;
     }
-    .modal-actions {
-      display: flex;
-      gap: 10px;
-    }
+    .modal-actions { display: flex; gap: 10px; }
     .modal-actions .btn {
       flex: 1;
       height: 44px;
@@ -354,6 +341,7 @@
     } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 
     const EMAILS_PERMITIDOS = ["hupcontato@gmail.com"];
+    const QTD_ULTIMOS = 3;
 
     const firebaseConfig = {
       apiKey: "AIzaSyDJFnhKXoUqKSIzsffYWkJ7qGIuEUhlUFs",
@@ -511,7 +499,7 @@
       root.innerHTML =
         '<section class="login">' +
         "<h2>Painel do criador</h2>" +
-        "<p>Entre com a conta Google autorizada para ver igrejas, membros e registros.</p>" +
+        "<p>Entre com a conta Google autorizada.</p>" +
         (msg ? '<div class="banner warn">' + esc(msg) + "</div>" : "") +
         '<button type="button" class="btn btn-primary btn-block" id="btnEntrar">Entrar com Google</button>' +
         "</section>";
@@ -546,11 +534,9 @@
         }
       });
 
-      const ultimoGeral = registros.reduce((acc, r) => {
-        const ts = tsDe(r);
-        if (!acc || ts > acc.ts) return { ts, item: r };
-        return acc;
-      }, null);
+      const ultimos = [...registros]
+        .sort((a, b) => tsDe(b) - tsDe(a))
+        .slice(0, QTD_ULTIMOS);
 
       const linhasIgreja = igrejas
         .map((ig) => {
@@ -585,7 +571,7 @@
       return {
         mapaNome,
         orfaos,
-        ultimoGeral,
+        ultimos,
         linhasIgreja,
         membrosLinhas,
       };
@@ -629,11 +615,45 @@
       });
     }
 
+    function cardLancamento(item, mapaNome) {
+      const info = nomeIgrejaPorId(item.igrejaId, mapaNome);
+      return (
+        '<div class="card">' +
+        '<div class="card-row">' +
+        '<div class="card-body">' +
+        '<div class="card-title">' +
+        esc(item.descricao || item.tipo || "Lançamento") +
+        "</div>" +
+        '<div class="card-sub">' +
+        esc(info.nome) +
+        " · " +
+        esc(item.tipoMovimento || "—") +
+        " · " +
+        esc(item.tipo || "—") +
+        "</div>" +
+        '<div class="card-foot">' +
+        "<span>" +
+        esc(dataTxt(tsDe(item))) +
+        "</span>" +
+        '<span class="card-valor">' +
+        money.format(valorRegistro(item)) +
+        "</span>" +
+        (info.orfao ? '<span class="pill alert">órfão</span>' : "") +
+        "</div>" +
+        "</div>" +
+        '<button type="button" class="icon-btn" data-del-reg="' +
+        esc(item.id) +
+        '" title="Excluir" aria-label="Excluir registro">' +
+        iconTrash() +
+        "</button>" +
+        "</div>" +
+        "</div>"
+      );
+    }
+
     function renderResumo(prep) {
-      const { orfaos, ultimoGeral, mapaNome } = prep;
+      const { orfaos, ultimos, mapaNome } = prep;
       const { igrejas, membros, registros } = cache;
-      const ult = ultimoGeral?.item;
-      const info = nomeIgrejaPorId(ult?.igrejaId, mapaNome);
 
       let html =
         '<div class="kpis">' +
@@ -655,46 +675,22 @@
 
       if (orfaos.length) {
         html +=
-          '<div class="banner warn">Existem registros sem igreja válida. Veja a aba Órfãos.</div>';
+          '<div class="banner warn">Há registros sem igreja válida. Veja a aba Órfãos.</div>';
       } else {
         html += '<div class="banner ok">Nenhum registro órfão.</div>';
       }
 
-      html += '<div class="section-title">Último lançamento</div>';
+      html +=
+        '<div class="section-title">Últimos ' +
+        QTD_ULTIMOS +
+        " lançamentos</div>";
 
-      if (!ult) {
+      if (!ultimos.length) {
         html += '<div class="empty">Nenhum lançamento ainda.</div>';
       } else {
         html +=
-          '<div class="card">' +
-          '<div class="card-row">' +
-          '<div class="card-body">' +
-          '<div class="card-title">' +
-          esc(ult.descricao || ult.tipo || "Lançamento") +
-          "</div>" +
-          '<div class="card-sub">' +
-          esc(info.nome) +
-          " · " +
-          esc(ult.tipoMovimento || "—") +
-          " · " +
-          esc(ult.tipo || "—") +
-          "</div>" +
-          '<div class="card-foot">' +
-          "<span>" +
-          esc(dataTxt(ultimoGeral.ts)) +
-          "</span>" +
-          "<span>" +
-          money.format(valorRegistro(ult)) +
-          "</span>" +
-          (info.orfao ? '<span class="pill alert">órfão</span>' : "") +
-          "</div>" +
-          "</div>" +
-          '<button type="button" class="icon-btn danger" data-del-reg="' +
-          esc(ult.id) +
-          '" title="Excluir" aria-label="Excluir registro">' +
-          iconTrash() +
-          "</button>" +
-          "</div>" +
+          '<div class="stack">' +
+          ultimos.map((item) => cardLancamento(item, mapaNome)).join("") +
           "</div>";
       }
 
@@ -703,7 +699,9 @@
 
     function renderIgrejas(prep) {
       const list = prep.linhasIgreja;
-      if (!list.length) return '<div class="empty">Nenhuma igreja cadastrada.</div>';
+      if (!list.length) {
+        return '<div class="empty">Nenhuma igreja cadastrada.</div>';
+      }
 
       return (
         '<div class="stack">' +
@@ -718,22 +716,22 @@
               "</div>" +
               '<div class="card-sub">' +
               ig.membros +
-              " membro(s) · último: " +
-              esc(dataTxt(ig.ultimo)) +
-              "</div>" +
+              " membro(s)</div>" +
               '<div class="card-foot">' +
-              "<span>" +
-              esc(ig.tipo) +
-              (ig.desc && ig.desc !== "—" ? " · " + esc(ig.desc) : "") +
+              "<span>Último: " +
+              esc(dataTxt(ig.ultimo)) +
               "</span>" +
+              (ig.tipo && ig.tipo !== "—"
+                ? "<span>" + esc(ig.tipo) + "</span>"
+                : "") +
               (ig.exclusao
-                ? '<span class="pill alert">exclui em ' +
+                ? '<span class="pill alert">exclui ' +
                   esc(dataTxt(ig.exclusao)) +
                   "</span>"
                 : "") +
               "</div>" +
               "</div>" +
-              '<button type="button" class="icon-btn danger" data-del-igreja="' +
+              '<button type="button" class="icon-btn" data-del-igreja="' +
               esc(ig.id) +
               '" data-nome="' +
               esc(ig.nome) +
@@ -774,7 +772,7 @@
               (m.orfao ? '<span class="pill alert">igreja órfã</span>' : "") +
               "</div>" +
               "</div>" +
-              '<button type="button" class="icon-btn danger" data-del-membro="' +
+              '<button type="button" class="icon-btn" data-del-membro="' +
               esc(m.id) +
               '" title="Remover membro" aria-label="Remover membro">' +
               iconTrash() +
@@ -795,40 +793,10 @@
       }
 
       return (
-        '<div class="banner warn">Estes lançamentos não têm igreja válida no banco.</div>' +
+        '<div class="banner warn">Lançamentos sem igreja válida no banco.</div>' +
         '<div class="stack">' +
         list
-          .map((r) => {
-            return (
-              '<div class="card">' +
-              '<div class="card-row">' +
-              '<div class="card-body">' +
-              '<div class="card-title">' +
-              esc(r.descricao || r.tipo || "Registro") +
-              "</div>" +
-              '<div class="card-sub">' +
-              esc(r.tipoMovimento || "—") +
-              " · " +
-              esc(r.tipo || "—") +
-              "</div>" +
-              '<div class="card-foot">' +
-              "<span>" +
-              esc(dataTxt(tsDe(r))) +
-              "</span>" +
-              "<span>" +
-              money.format(valorRegistro(r)) +
-              "</span>" +
-              "</div>" +
-              "</div>" +
-              '<button type="button" class="icon-btn danger" data-del-reg="' +
-              esc(r.id) +
-              '" title="Excluir" aria-label="Excluir registro">' +
-              iconTrash() +
-              "</button>" +
-              "</div>" +
-              "</div>"
-            );
-          })
+          .map((r) => cardLancamento(r, prep.mapaNome))
           .join("") +
         "</div>"
       );
@@ -839,7 +807,7 @@
 
       if (prep.orfaos.length) {
         tabOrfaos.classList.remove("hidden");
-        tabOrfaos.textContent = "Órfãos (" + prep.orfaos.length + ")";
+        tabOrfaos.textContent = "Órfãos · " + prep.orfaos.length;
       } else {
         tabOrfaos.classList.add("hidden");
         if (tabAtual === "orfaos") tabAtual = "resumo";
@@ -866,7 +834,8 @@
 
     async function carregar(silencioso) {
       if (!silencioso) {
-        root.innerHTML = '<p style="color:#6b7280;font-size:14px">Carregando…</p>';
+        root.innerHTML =
+          '<p style="color:#6b7280;font-size:14px;margin:0">Carregando…</p>';
       }
       const [igrejasSnap, membrosSnap, registrosSnap] = await Promise.all([
         getDocs(collection(db, "igrejas")),
