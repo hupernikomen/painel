@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Painel · Tesouraria</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -17,28 +17,37 @@
       --red: #c62828;
       --orange: #e65100;
       --warn-bg: #fff3e0;
+      --card: #fff;
     }
     * { box-sizing: border-box; }
     body {
       margin: 0;
-      font-family: Roboto, sans-serif;
+      font-family: Roboto, system-ui, sans-serif;
       background: var(--bg);
       color: var(--ink);
+      -webkit-tap-highlight-color: transparent;
     }
     header {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: space-between;
-      gap: 16px;
-      padding: 18px 22px;
-      background: #fff;
+      gap: 12px;
+      padding: 14px 16px;
+      padding-top: max(14px, env(safe-area-inset-top));
+      background: var(--card);
       border-bottom: 1px solid var(--line);
       position: sticky;
       top: 0;
       z-index: 10;
     }
-    h1 { margin: 0; font-size: 18px; font-weight: 700; }
-    .sub { margin: 2px 0 0; font-size: 12px; color: var(--muted); }
+    h1 { margin: 0; font-size: 17px; font-weight: 700; }
+    .sub {
+      margin: 3px 0 0;
+      font-size: 12px;
+      color: var(--muted);
+      word-break: break-all;
+    }
+    #acoes { display: flex; gap: 8px; flex-shrink: 0; }
     button {
       border: 0;
       border-radius: 12px;
@@ -53,62 +62,117 @@
     .btn { background: var(--green); color: #fff; }
     .btn-ghost { background: #f4f5f7; color: #333; }
     .btn-danger { background: #ffebee; color: var(--red); }
-    .btn-sm { height: 30px; padding: 0 10px; font-size: 12px; border-radius: 10px; }
-    main { max-width: 1040px; margin: 0 auto; padding: 22px 16px 56px; }
+    .btn-sm { height: 34px; padding: 0 12px; font-size: 12px; border-radius: 10px; }
+    main {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 16px 14px 72px;
+      padding-bottom: max(72px, env(safe-area-inset-bottom));
+    }
     .login {
       max-width: 420px;
-      margin: 48px auto;
-      background: #fff;
+      margin: 32px auto;
+      background: var(--card);
       border-radius: 18px;
-      padding: 28px 22px;
+      padding: 28px 20px;
       text-align: center;
     }
-    .login h2 { margin: 0 0 8px; font-size: 22px; }
+    .login h2 { margin: 0 0 8px; font-size: 20px; }
     .login p { color: var(--muted); font-size: 14px; line-height: 1.5; }
     .grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(2, 1fr);
       gap: 10px;
       margin-bottom: 16px;
     }
-    .kpi { background: #fff; border-radius: 16px; padding: 16px; }
-    .kpi span { display: block; font-size: 12px; color: var(--muted); font-weight: 300; }
-    .kpi strong { display: block; margin-top: 6px; font-size: 24px; }
-    .kpi.warn strong { color: var(--orange); }
-    .card {
-      background: #fff;
-      border-radius: 16px;
-      padding: 6px 14px;
-      margin-bottom: 16px;
+    @media (min-width: 720px) {
+      .grid { grid-template-columns: repeat(4, 1fr); }
     }
+    .kpi {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 14px;
+    }
+    .kpi span {
+      display: block;
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 300;
+    }
+    .kpi strong {
+      display: block;
+      margin-top: 6px;
+      font-size: 22px;
+    }
+    .kpi.warn strong { color: var(--orange); }
     h3 {
-      margin: 18px 4px 8px;
+      margin: 20px 4px 10px;
       font-size: 12px;
       font-weight: 500;
       color: #666;
       text-transform: uppercase;
       letter-spacing: 0.4px;
     }
-    table { width: 100%; border-collapse: collapse; font-size: 14px; }
-    th, td {
+    .hint-select {
+      margin: -4px 4px 10px;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+    .list { display: flex; flex-direction: column; gap: 8px; }
+    .item {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 14px;
+      border: 1.5px solid transparent;
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
       text-align: left;
-      padding: 12px 6px;
-      border-bottom: 1px solid #f0f0f0;
-      vertical-align: top;
+      width: 100%;
+      font: inherit;
+      color: inherit;
     }
-    th { font-size: 11px; font-weight: 500; color: var(--muted); }
-    tr:last-child td { border-bottom: 0; }
-    .row-actions { white-space: nowrap; }
-    .err, .aviso, .ok {
-      border-radius: 12px;
-      padding: 12px 14px;
-      font-size: 13px;
+    .item:active { background: #fafafa; }
+    .item.selected {
+      border-color: var(--green);
+      background: #f8fff7;
+    }
+    .item-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .item-title {
+      font-size: 15px;
+      font-weight: 500;
+      line-height: 1.3;
+      word-break: break-word;
+    }
+    .item-meta {
+      margin-top: 6px;
+      font-size: 12px;
+      color: var(--muted);
       line-height: 1.45;
-      margin-bottom: 14px;
+      word-break: break-word;
     }
-    .err, .aviso { background: var(--warn-bg); color: var(--orange); }
-    .ok { background: #e8f5e9; color: #2e7d32; }
-    .muted { color: var(--muted); font-weight: 300; font-size: 12px; }
+    .item-meta strong { color: var(--ink); font-weight: 500; }
+    .item-side {
+      font-size: 12px;
+      color: var(--muted);
+      text-align: right;
+      flex-shrink: 0;
+      max-width: 42%;
+    }
+    .item-actions {
+      display: none;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid var(--line);
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .item.selected .item-actions { display: flex; }
     .tag {
       display: inline-block;
       font-size: 11px;
@@ -117,17 +181,55 @@
       border-radius: 8px;
       background: #fff3e0;
       color: var(--orange);
-      margin-top: 4px;
+      margin-top: 6px;
+    }
+    .err, .aviso, .ok {
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 13px;
+      line-height: 1.45;
+      margin-bottom: 12px;
+    }
+    .err, .aviso { background: var(--warn-bg); color: var(--orange); }
+    .ok { background: #e8f5e9; color: #2e7d32; }
+    .muted { color: var(--muted); font-weight: 300; font-size: 12px; }
+    .detail-card {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 4px 0;
+      margin-bottom: 8px;
+    }
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 14px;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 14px;
+    }
+    .detail-row:last-child { border-bottom: 0; }
+    .detail-row span:first-child {
+      color: var(--muted);
+      font-size: 12px;
+      flex-shrink: 0;
+    }
+    .detail-row span:last-child {
+      text-align: right;
+      word-break: break-word;
     }
     .modal-bg {
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.4);
+      background: rgba(0,0,0,0.45);
       display: flex;
-      align-items: center;
+      align-items: flex-end;
       justify-content: center;
       z-index: 50;
       padding: 16px;
+      padding-bottom: max(16px, env(safe-area-inset-bottom));
+    }
+    @media (min-width: 560px) {
+      .modal-bg { align-items: center; }
     }
     .modal {
       width: 100%;
@@ -137,15 +239,26 @@
       padding: 20px;
     }
     .modal h4 { margin: 0 0 8px; font-size: 17px; }
-    .modal p { margin: 0 0 16px; font-size: 14px; color: #555; line-height: 1.45; }
-    .modal-actions { display: flex; gap: 10px; justify-content: flex-end; }
-    .hidden { display: none !important; }
-    @media (max-width: 800px) {
-      .grid { grid-template-columns: 1fr 1fr; }
-      header { flex-direction: column; align-items: flex-start; }
+    .modal p {
+      margin: 0 0 16px;
+      font-size: 14px;
+      color: #555;
+      line-height: 1.45;
     }
-    @media (max-width: 520px) {
-      .grid { grid-template-columns: 1fr; }
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: stretch;
+    }
+    .modal-actions button { flex: 1; height: 44px; }
+    .hidden { display: none !important; }
+    .empty {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 20px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 14px;
     }
   </style>
 </head>
@@ -155,7 +268,7 @@
       <h1>Painel do criador</h1>
       <p class="sub" id="quem">Tesouraria · leitura e exclusão</p>
     </div>
-    <div id="acoes" style="display:flex;gap:8px;flex-wrap:wrap;"></div>
+    <div id="acoes"></div>
   </header>
   <main id="app"></main>
 
@@ -189,9 +302,7 @@
       where,
     } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 
-    const EMAILS_PERMITIDOS = [
-      "hupcontato@gmail.com",
-    ];
+    const EMAILS_PERMITIDOS = ["hupcontato@gmail.com"];
 
     const firebaseConfig = {
       apiKey: "AIzaSyDJFnhKXoUqKSIzsffYWkJ7qGIuEUhlUFs",
@@ -217,6 +328,7 @@
 
     let cache = { igrejas: [], membros: [], registros: [] };
     let pendingAction = null;
+    let selectedKey = null;
 
     const money = new Intl.NumberFormat("pt-BR", {
       style: "currency",
@@ -305,19 +417,24 @@
         await apagarQuery("caixinhas", "igrejaId", igrejaId);
       } catch (_) {}
       await deleteDoc(doc(db, "igrejas", igrejaId));
+      selectedKey = null;
       await carregar(true);
-      alert("Igreja \"" + nome + "\" excluída.\nMembros: " + nM + "\nRegistros: " + nR);
+      alert(
+        'Igreja "' + nome + '" excluída.\nMembros: ' + nM + "\nRegistros: " + nR
+      );
     }
 
     async function excluirRegistro(regId) {
       if (!regId) return;
       await deleteDoc(doc(db, "registros", regId));
+      selectedKey = null;
       await carregar(true);
     }
 
     async function excluirMembro(membroId) {
       if (!membroId) return;
       await deleteDoc(doc(db, "membros", membroId));
+      selectedKey = null;
       await carregar(true);
     }
 
@@ -338,15 +455,75 @@
         "<h2>Acesso do criador</h2>" +
         "<p>Entre com a conta Google autorizada.</p>" +
         (msg ? '<div class="aviso">' + esc(msg) + "</div>" : "") +
-        '<button class="btn" id="btnEntrar">Entrar com Google</button>' +
+        '<button class="btn" id="btnEntrar" style="width:100%;height:48px;margin-top:8px">Entrar com Google</button>' +
         "</section>";
       document.getElementById("btnEntrar").onclick = () =>
-        entrar().catch((e) => telaLogin(e?.message || "Não foi possível entrar."));
+        entrar().catch((e) =>
+          telaLogin(e?.message || "Não foi possível entrar.")
+        );
+    }
+
+    function bindSelectAndDelete() {
+      root.querySelectorAll("[data-select]").forEach((el) => {
+        el.addEventListener("click", (e) => {
+          if (
+            e.target.closest(
+              "[data-del-igreja],[data-del-reg],[data-del-membro]"
+            )
+          ) {
+            return;
+          }
+          const key = el.getAttribute("data-select");
+          selectedKey = selectedKey === key ? null : key;
+          render(cache);
+        });
+      });
+
+      root.querySelectorAll("[data-del-igreja]").forEach((btn) => {
+        btn.onclick = (e) => {
+          e.stopPropagation();
+          const id = btn.getAttribute("data-del-igreja");
+          const nome = btn.getAttribute("data-nome") || id;
+          abrirModal(
+            "Excluir igreja",
+            'Isso apaga a igreja "' +
+              nome +
+              '", todos os membros, registros e caixinhas ligados a ela. Não dá para desfazer pelo painel.',
+            () => excluirIgrejaCompleta(id, nome)
+          );
+        };
+      });
+
+      root.querySelectorAll("[data-del-reg]").forEach((btn) => {
+        btn.onclick = (e) => {
+          e.stopPropagation();
+          const id = btn.getAttribute("data-del-reg");
+          abrirModal(
+            "Excluir registro",
+            "Remover este registro do Firestore? Ação imediata.",
+            () => excluirRegistro(id)
+          );
+        };
+      });
+
+      root.querySelectorAll("[data-del-membro]").forEach((btn) => {
+        btn.onclick = (e) => {
+          e.stopPropagation();
+          const id = btn.getAttribute("data-del-membro");
+          abrirModal(
+            "Remover membro",
+            "Remove o vínculo deste e-mail com a igreja. A conta do Authentication não é apagada.",
+            () => excluirMembro(id)
+          );
+        };
+      });
     }
 
     function render(data) {
       const { igrejas, membros, registros } = data;
-      const mapaNome = new Map(igrejas.map((i) => [i.id, i.nome || "Igreja"]));
+      const mapaNome = new Map(
+        igrejas.map((i) => [i.id, i.nome || "Igreja"])
+      );
 
       const membrosPorIgreja = {};
       membros.forEach((m) => {
@@ -378,6 +555,8 @@
       const ult = ultimoGeral?.item;
       const infoIgrejaUlt = nomeIgrejaPorId(ult?.igrejaId, mapaNome);
       const ultValor = ult ? valorRegistro(ult) : 0;
+      const keyUlt = ult?.id ? "reg:" + ult.id : null;
+      const selUlt = keyUlt && selectedKey === keyUlt;
 
       let avisoInconsistencia = "";
       if (ult && infoIgrejaUlt.orfao) {
@@ -386,7 +565,7 @@
           dataTxt(ultimoGeral.ts) +
           ") aponta para uma igreja que não existe na coleção igrejas (ID: " +
           (ult.igrejaId || "vazio") +
-          "). Por isso ele não aparece na tabela de igrejas.";
+          "). Por isso ele não aparece na lista de igrejas.";
       }
 
       const linhasIgreja = igrejas
@@ -420,166 +599,211 @@
 
       root.innerHTML =
         '<div class="grid">' +
-        '<div class="kpi"><span>Igrejas</span><strong>' + igrejas.length + "</strong></div>" +
-        '<div class="kpi"><span>Membros</span><strong>' + membros.length + "</strong></div>" +
-        '<div class="kpi"><span>Registros</span><strong>' + registros.length + "</strong></div>" +
-        '<div class="kpi ' + (orfaos.length ? "warn" : "") + '"><span>Registros órfãos</span><strong>' + orfaos.length + "</strong></div>" +
+        '<div class="kpi"><span>Igrejas</span><strong>' +
+        igrejas.length +
+        "</strong></div>" +
+        '<div class="kpi"><span>Membros</span><strong>' +
+        membros.length +
+        "</strong></div>" +
+        '<div class="kpi"><span>Registros</span><strong>' +
+        registros.length +
+        "</strong></div>" +
+        '<div class="kpi ' +
+        (orfaos.length ? "warn" : "") +
+        '"><span>Registros órfãos</span><strong>' +
+        orfaos.length +
+        "</strong></div>" +
         "</div>" +
-        (avisoInconsistencia ? '<div class="aviso">' + esc(avisoInconsistencia) + "</div>" : "") +
+        (avisoInconsistencia
+          ? '<div class="aviso">' + esc(avisoInconsistencia) + "</div>"
+          : "") +
         (orfaos.length
-          ? '<div class="aviso">Há ' + orfaos.length + " registro(s) com igreja inexistente ou sem igrejaId. Eles contam no “último lançamento” global, mas não entram na coluna “Último registro” da tabela de igrejas.</div>"
+          ? '<div class="aviso">Há ' +
+            orfaos.length +
+            " registro(s) com igreja inexistente ou sem igrejaId.</div>"
           : '<div class="ok">Nenhum registro órfão detectado.</div>') +
         "<h3>Último lançamento</h3>" +
-        '<div class="card"><table>' +
-        "<tr><th>Quando</th><td>" + esc(dataTxt(ultimoGeral?.ts)) + "</td></tr>" +
-        "<tr><th>Igreja</th><td>" +
-        esc(infoIgrejaUlt.nome) +
-        (infoIgrejaUlt.orfao
-          ? '<div class="tag">órfão · ID ' + esc(infoIgrejaUlt.id || ult?.igrejaId || "—") + "</div>"
-          : '<div class="muted">' + esc(ult?.igrejaId || "") + "</div>") +
-        "</td></tr>" +
-        "<tr><th>Tipo</th><td>" + esc(ult?.tipoMovimento || "—") + " · " + esc(ult?.tipo || "—") + "</td></tr>" +
-        "<tr><th>Descrição</th><td>" + esc(ult?.descricao || "—") + "</td></tr>" +
-        "<tr><th>Valor</th><td>" + (ult ? money.format(ultValor) : "—") + "</td></tr>" +
-        '<tr><th>Ações</th><td class="row-actions">' +
-        (ult?.id
-          ? '<button class="btn-danger btn-sm" data-del-reg="' + esc(ult.id) + '">Excluir este registro</button>'
-          : "—") +
-        "</td></tr>" +
-        "</table></div>" +
+        '<p class="hint-select">Toque no card para selecionar e só então ver o botão de excluir.</p>' +
+        (ult
+          ? '<button type="button" class="item' +
+            (selUlt ? " selected" : "") +
+            '" data-select="' +
+            esc(keyUlt) +
+            '">' +
+            '<div class="item-top">' +
+            '<div class="item-title">' +
+            esc(ult.descricao || ult.tipo || "Lançamento") +
+            "</div>" +
+            '<div class="item-side">' +
+            esc(dataTxt(ultimoGeral.ts)) +
+            "</div>" +
+            "</div>" +
+            '<div class="item-meta">' +
+            "<div><strong>" +
+            esc(infoIgrejaUlt.nome) +
+            "</strong></div>" +
+            "<div>" +
+            esc(ult.tipoMovimento || "—") +
+            " · " +
+            esc(ult.tipo || "—") +
+            "</div>" +
+            "<div>" +
+            money.format(ultValor) +
+            "</div>" +
+            (infoIgrejaUlt.orfao
+              ? '<div class="tag">órfão · ID ' +
+                esc(infoIgrejaUlt.id || ult.igrejaId || "—") +
+                "</div>"
+              : "") +
+            "</div>" +
+            '<div class="item-actions">' +
+            '<button type="button" class="btn-danger btn-sm" data-del-reg="' +
+            esc(ult.id) +
+            '">Excluir este registro</button>' +
+            "</div>" +
+            "</button>"
+          : '<div class="empty">Nenhum lançamento.</div>') +
         "<h3>Igrejas</h3>" +
-        '<div class="card"><table><thead><tr>' +
-        "<th>Igreja</th><th>Membros</th><th>Último registro</th><th>O quê</th><th></th>" +
-        "</tr></thead><tbody>" +
+        '<p class="hint-select">Toque em uma igreja para selecionar e mostrar Excluir.</p>' +
+        '<div class="list">' +
         (linhasIgreja.length
           ? linhasIgreja
-              .map(function (ig) {
+              .map((ig) => {
+                const key = "igreja:" + ig.id;
+                const sel = selectedKey === key;
                 return (
-                  "<tr><td>" +
+                  '<button type="button" class="item' +
+                  (sel ? " selected" : "") +
+                  '" data-select="' +
+                  esc(key) +
+                  '">' +
+                  '<div class="item-top">' +
+                  '<div class="item-title">' +
                   esc(ig.nome) +
+                  "</div>" +
+                  '<div class="item-side">' +
+                  ig.membros +
+                  " membro(s)</div>" +
+                  "</div>" +
+                  '<div class="item-meta">' +
+                  "<div>Último: " +
+                  esc(dataTxt(ig.ultimo)) +
+                  "</div>" +
+                  "<div>" +
+                  esc(ig.tipo) +
+                  " · " +
+                  esc(ig.desc) +
+                  "</div>" +
                   '<div class="muted">' +
                   esc(ig.id) +
                   "</div>" +
                   (ig.exclusao
-                    ? '<div class="tag">exclusão prevista ' + esc(dataTxt(ig.exclusao)) + "</div>"
+                    ? '<div class="tag">exclusão prevista ' +
+                      esc(dataTxt(ig.exclusao)) +
+                      "</div>"
                     : "") +
-                  "</td><td>" +
-                  ig.membros +
-                  "</td><td>" +
-                  esc(dataTxt(ig.ultimo)) +
-                  "</td><td>" +
-                  esc(ig.tipo) +
-                  '<div class="muted">' +
-                  esc(ig.desc) +
-                  '</div></td><td class="row-actions">' +
-                  '<button class="btn-danger btn-sm" data-del-igreja="' +
+                  "</div>" +
+                  '<div class="item-actions">' +
+                  '<button type="button" class="btn-danger btn-sm" data-del-igreja="' +
                   esc(ig.id) +
                   '" data-nome="' +
                   esc(ig.nome) +
-                  '">Excluir</button></td></tr>'
+                  '">Excluir igreja</button>' +
+                  "</div>" +
+                  "</button>"
                 );
               })
               .join("")
-          : '<tr><td colspan="5">Nenhuma igreja.</td></tr>') +
-        "</tbody></table></div>" +
+          : '<div class="empty">Nenhuma igreja.</div>') +
+        "</div>" +
         (orfaos.length
           ? "<h3>Registros órfãos</h3>" +
-            '<div class="card"><table><thead><tr>' +
-            "<th>Quando</th><th>ID do registro</th><th>Tipo</th><th>Descrição</th><th>Valor</th><th></th>" +
-            "</tr></thead><tbody>" +
+            '<p class="hint-select">Toque no item para selecionar e excluir.</p>' +
+            '<div class="list">' +
             orfaos
-              .sort(function (a, b) {
-                return tsDe(b) - tsDe(a);
-              })
-              .map(function (r) {
+              .sort((a, b) => tsDe(b) - tsDe(a))
+              .map((r) => {
+                const key = "reg:" + r.id;
+                const sel = selectedKey === key;
                 return (
-                  "<tr><td>" +
+                  '<button type="button" class="item' +
+                  (sel ? " selected" : "") +
+                  '" data-select="' +
+                  esc(key) +
+                  '">' +
+                  '<div class="item-top">' +
+                  '<div class="item-title">' +
+                  esc(r.descricao || r.tipo || "Registro") +
+                  "</div>" +
+                  '<div class="item-side">' +
                   esc(dataTxt(tsDe(r))) +
-                  '</td><td><span class="tag">' +
-                  esc(r.id || "—") +
-                  "</span></td><td>" +
+                  "</div>" +
+                  "</div>" +
+                  '<div class="item-meta">' +
+                  "<div>" +
                   esc(r.tipoMovimento || "—") +
                   " · " +
                   esc(r.tipo || "—") +
-                  "</td><td>" +
-                  esc(r.descricao || "—") +
-                  "</td><td>" +
+                  "</div>" +
+                  "<div>" +
                   money.format(valorRegistro(r)) +
-                  '</td><td class="row-actions">' +
-                  '<button class="btn-danger btn-sm" data-del-reg="' +
+                  "</div>" +
+                  '<div class="tag">ID ' +
+                  esc(r.id || "—") +
+                  "</div>" +
+                  "</div>" +
+                  '<div class="item-actions">' +
+                  '<button type="button" class="btn-danger btn-sm" data-del-reg="' +
                   esc(r.id) +
-                  '">Excluir</button></td></tr>'
+                  '">Excluir registro</button>' +
+                  "</div>" +
+                  "</button>"
                 );
               })
               .join("") +
-            "</tbody></table></div>"
+            "</div>"
           : "") +
         "<h3>Membros</h3>" +
-        '<div class="card"><table><thead><tr>' +
-        "<th>E-mail / UID</th><th>Papel</th><th>Igreja</th><th></th>" +
-        "</tr></thead><tbody>" +
+        '<p class="hint-select">Toque no membro para selecionar e mostrar Remover.</p>' +
+        '<div class="list">' +
         (membrosLinhas.length
           ? membrosLinhas
-              .map(function (m) {
+              .map((m) => {
+                const key = "membro:" + m.id;
+                const sel = selectedKey === key;
                 return (
-                  "<tr><td>" +
+                  '<button type="button" class="item' +
+                  (sel ? " selected" : "") +
+                  '" data-select="' +
+                  esc(key) +
+                  '">' +
+                  '<div class="item-top">' +
+                  '<div class="item-title">' +
                   esc(m.email) +
-                  "</td><td>" +
+                  "</div>" +
+                  '<div class="item-side">' +
                   esc(m.papel) +
-                  "</td><td>" +
+                  "</div>" +
+                  "</div>" +
+                  '<div class="item-meta">' +
+                  "<div>" +
                   esc(m.igreja) +
+                  "</div>" +
                   (m.orfao ? '<div class="tag">igreja órfã</div>' : "") +
-                  '</td><td class="row-actions">' +
-                  '<button class="btn-danger btn-sm" data-del-membro="' +
+                  "</div>" +
+                  '<div class="item-actions">' +
+                  '<button type="button" class="btn-danger btn-sm" data-del-membro="' +
                   esc(m.id) +
-                  '">Remover</button></td></tr>'
+                  '">Remover membro</button>' +
+                  "</div>" +
+                  "</button>"
                 );
               })
               .join("")
-          : '<tr><td colspan="4">Nenhum membro.</td></tr>') +
-        "</tbody></table></div>";
+          : '<div class="empty">Nenhum membro.</div>') +
+        "</div>";
 
-      root.querySelectorAll("[data-del-igreja]").forEach(function (btn) {
-        btn.onclick = function () {
-          var id = btn.getAttribute("data-del-igreja");
-          var nome = btn.getAttribute("data-nome") || id;
-          abrirModal(
-            "Excluir igreja",
-            'Isso apaga a igreja "' +
-              nome +
-              '", todos os membros, registros e caixinhas ligados a ela. Não dá para desfazer pelo painel.',
-            function () {
-              return excluirIgrejaCompleta(id, nome);
-            }
-          );
-        };
-      });
-
-      root.querySelectorAll("[data-del-reg]").forEach(function (btn) {
-        btn.onclick = function () {
-          var id = btn.getAttribute("data-del-reg");
-          abrirModal(
-            "Excluir registro",
-            "Remover este registro do Firestore? Ação imediata.",
-            function () {
-              return excluirRegistro(id);
-            }
-          );
-        };
-      });
-
-      root.querySelectorAll("[data-del-membro]").forEach(function (btn) {
-        btn.onclick = function () {
-          var id = btn.getAttribute("data-del-membro");
-          abrirModal(
-            "Remover membro",
-            "Remove o vínculo deste e-mail com a igreja. A conta do Authentication não é apagada.",
-            function () {
-              return excluirMembro(id);
-            }
-          );
-        };
-      });
+      bindSelectAndDelete();
     }
 
     async function carregar(silencioso) {
@@ -612,12 +836,8 @@
       acoes.innerHTML =
         '<button class="btn-ghost" id="btnRefresh">Atualizar</button>' +
         '<button class="btn-ghost" id="btnSair">Sair</button>';
-      document.getElementById("btnSair").onclick = function () {
-        sair();
-      };
-      document.getElementById("btnRefresh").onclick = function () {
-        carregar();
-      };
+      document.getElementById("btnSair").onclick = () => sair();
+      document.getElementById("btnRefresh").onclick = () => carregar();
       try {
         await carregar();
       } catch (e) {
