@@ -2,8 +2,8 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Painel · Tesouraria ERP</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>Painel · Tesouraria</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -27,74 +27,74 @@
       --warning: #f59e0b;
       --warning-light: #fffbeb;
 
-      --radius-sm: 8px;
-      --radius-md: 12px;
-      --radius-lg: 16px;
+      --radius-sm: 10px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
 
-      --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
     }
 
-    * { box-sizing: border-box; }
+    * { 
+      box-sizing: border-box; 
+      -webkit-tap-highlight-color: transparent;
+    }
     
     body {
       margin: 0;
       font-family: 'Inter', system-ui, -apple-system, sans-serif;
       background: var(--bg-body);
       color: var(--text-main);
-      -webkit-tap-highlight-color: transparent;
       min-height: 100vh;
-    }
-
-    /* Layout Principal */
-    .app-layout {
       display: flex;
       flex-direction: column;
-      min-height: 100vh;
     }
 
-    /* Header / Topbar */
+    /* Header Mobile */
     .top-header {
       position: sticky;
       top: 0;
       z-index: 20;
-      background: rgba(255, 255, 255, 0.9);
-      backdrop-filter: blur(8px);
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--border);
-      padding: 12px 24px;
+      padding: max(12px, env(safe-area-inset-top)) 16px 12px;
     }
     
     .top-container {
-      max-width: 1200px;
-      margin: 0 auto;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 16px;
+      gap: 12px;
     }
 
     .brand-section {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
+      min-width: 0;
     }
 
     .brand-icon {
-      width: 40px;
-      height: 40px;
+      width: 36px;
+      height: 36px;
       background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
       color: white;
-      border-radius: var(--radius-md);
+      border-radius: var(--radius-sm);
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2);
+      flex-shrink: 0;
+    }
+
+    .brand-info {
+      min-width: 0;
     }
 
     .brand-info h1 {
       margin: 0;
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 700;
       color: var(--text-main);
       line-height: 1.2;
@@ -102,102 +102,114 @@
 
     .brand-info .user-email {
       margin: 2px 0 0;
-      font-size: 12px;
+      font-size: 11px;
       color: var(--text-muted);
-      font-weight: 400;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .top-actions {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
+      flex-shrink: 0;
     }
 
-    /* Navegação por Abas */
-    .nav-bar {
-      background: var(--bg-surface);
-      border-bottom: 1px solid var(--border);
-      padding: 0 24px;
+    /* Conteúdo Principal */
+    main {
+      flex: 1;
+      width: 100%;
+      padding: 16px;
+      padding-bottom: max(80px, calc(65px + env(safe-area-inset-bottom)));
+    }
+
+    /* Bottom Navigation Bar (Estilo App Nativo) */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 30;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-top: 1px solid var(--border);
+      padding-bottom: env(safe-area-inset-bottom);
     }
 
     .tabs {
-      max-width: 1200px;
-      margin: 0 auto;
       display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      scrollbar-width: none;
+      justify-content: space-around;
+      align-items: center;
+      height: 56px;
     }
-    
-    .tabs::-webkit-scrollbar { display: none; }
 
     .tab {
-      display: inline-flex;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
       align-items: center;
-      gap: 8px;
-      padding: 14px 16px;
+      justify-content: center;
+      gap: 3px;
+      height: 100%;
       border: 0;
       background: transparent;
       color: var(--text-muted);
-      font-size: 14px;
+      font-size: 10px;
       font-weight: 500;
       cursor: pointer;
-      border-bottom: 2px solid transparent;
-      transition: all 0.2s ease;
-      white-space: nowrap;
+      padding: 0;
+      transition: color 0.15s ease;
     }
 
-    .tab:hover {
-      color: var(--text-main);
+    .tab svg {
+      width: 20px;
+      height: 20px;
+      transition: transform 0.15s ease;
     }
 
     .tab.active {
       color: var(--primary-dark);
-      border-bottom-color: var(--primary);
-      font-weight: 600;
+      font-weight: 700;
     }
 
-    /* Main Container */
-    main {
-      flex: 1;
-      max-width: 1200px;
-      width: 100%;
-      margin: 0 auto;
-      padding: 24px;
+    .tab.active svg {
+      transform: translateY(-1px);
     }
 
-    /* Botões */
-    button { font-family: 'Inter', sans-serif; border: 0; cursor: pointer; transition: all 0.15s ease; }
+    /* Botões Adaptados */
+    button { 
+      font-family: 'Inter', sans-serif; 
+      border: 0; 
+      cursor: pointer; 
+      user-select: none;
+    }
     
     .btn {
-      height: 38px;
-      padding: 0 16px;
+      height: 36px;
+      padding: 0 12px;
       border-radius: var(--radius-sm);
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 600;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
+      gap: 4px;
       background: var(--bg-surface);
       border: 1px solid var(--border);
       color: var(--text-main);
       box-shadow: var(--shadow-sm);
     }
 
-    .btn:hover {
-      background: #f1f5f9;
+    .btn:active {
+      transform: scale(0.97);
     }
 
     .btn-primary {
       background: var(--primary);
       border-color: var(--primary);
       color: #ffffff;
-    }
-    
-    .btn-primary:hover {
-      background: var(--primary-dark);
-      border-color: var(--primary-dark);
     }
 
     .btn-danger {
@@ -206,244 +218,199 @@
       color: var(--danger);
     }
 
-    .btn-danger:hover {
-      background: var(--danger);
-      color: white;
-    }
-
     .btn-block {
       width: 100%;
-      height: 44px;
-      font-size: 14px;
+      height: 48px;
+      font-size: 15px;
+      border-radius: var(--radius-md);
     }
 
     .icon-btn {
-      width: 34px;
-      height: 34px;
+      width: 38px;
+      height: 38px;
       border-radius: var(--radius-sm);
-      background: transparent;
-      color: var(--text-light);
+      background: var(--bg-body);
+      color: var(--text-muted);
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      border: 1px solid transparent;
+      border: 1px solid var(--border);
+      flex-shrink: 0;
     }
 
-    .icon-btn:hover {
+    .icon-btn:active {
       background: var(--danger-light);
       color: var(--danger);
       border-color: #fca5a5;
     }
 
-    /* Login Box */
+    /* Tela de Login Mobile */
     .login-container {
-      max-width: 400px;
-      margin: 60px auto;
+      padding-top: 40px;
     }
 
     .login {
       background: var(--bg-surface);
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
-      padding: 40px 32px;
+      padding: 28px 20px;
       text-align: center;
       box-shadow: var(--shadow-md);
     }
 
     .login-logo {
-      width: 56px;
-      height: 56px;
+      width: 48px;
+      height: 48px;
       background: var(--primary-light);
       color: var(--primary);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 0 auto 20px;
+      margin: 0 auto 16px;
     }
 
     .login h2 {
       margin: 0 0 8px;
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 700;
-      color: var(--text-main);
     }
 
     .login p {
-      margin: 0 0 24px;
+      margin: 0 0 20px;
       color: var(--text-muted);
-      font-size: 14px;
-      line-height: 1.5;
+      font-size: 13px;
+      line-height: 1.4;
     }
 
-    /* Dashboard KPIs Grid */
+    /* KPIs Grid Mobile (2 colunas compactas) */
     .kpis {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 16px;
-      margin-bottom: 24px;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 16px;
     }
 
     .kpi {
       background: var(--bg-surface);
       border: 1px solid var(--border);
       border-radius: var(--radius-md);
-      padding: 20px;
+      padding: 12px 14px;
       box-shadow: var(--shadow-sm);
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
     }
 
-    .kpi-info label {
+    .kpi label {
       display: block;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 600;
       color: var(--text-muted);
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.03em;
     }
 
-    .kpi-info strong {
+    .kpi strong {
       display: block;
-      margin-top: 8px;
-      font-size: 28px;
+      margin-top: 4px;
+      font-size: 22px;
       font-weight: 700;
       color: var(--text-main);
       letter-spacing: -0.5px;
-    }
-
-    .kpi-icon {
-      width: 42px;
-      height: 42px;
-      border-radius: var(--radius-sm);
-      background: var(--bg-body);
-      color: var(--text-muted);
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
 
     .kpi.warn {
       border-color: #fde68a;
       background: #fffbeb;
     }
-    
+
     .kpi.warn strong { color: var(--warning); }
-    .kpi.warn .kpi-icon { background: #fef3c7; color: var(--warning); }
 
     /* Banners de Alerta */
     .banner {
-      border-radius: var(--radius-md);
-      padding: 14px 18px;
-      font-size: 14px;
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      font-size: 13px;
       font-weight: 500;
-      margin-bottom: 24px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .banner.ok {
-      background: var(--primary-light);
-      border: 1px solid #a7f3d0;
-      color: #065f46;
-    }
-
-    .banner.warn {
-      background: var(--warning-light);
-      border: 1px solid #fde68a;
-      color: #92400e;
-    }
-
-    .banner.err {
-      background: var(--danger-light);
-      border: 1px solid #fca5a5;
-      color: #991b1b;
-    }
-
-    .section-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
       margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      line-height: 1.3;
     }
+
+    .banner.ok { background: var(--primary-light); border: 1px solid #a7f3d0; color: #065f46; }
+    .banner.warn { background: var(--warning-light); border: 1px solid #fde68a; color: #92400e; }
+    .banner.err { background: var(--danger-light); border: 1px solid #fca5a5; color: #991b1b; }
 
     .section-title {
-      font-size: 14px;
+      font-size: 12px;
       font-weight: 600;
       color: var(--text-muted);
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.04em;
+      margin-bottom: 10px;
     }
 
-    /* Cards e Listas */
-    .stack { display: flex; flex-direction: column; gap: 12px; }
+    /* Cards e Listas Mobile */
+    .stack { display: flex; flex-direction: column; gap: 10px; }
 
     .card {
       background: var(--bg-surface);
       border: 1px solid var(--border);
       border-radius: var(--radius-md);
-      padding: 18px;
+      padding: 14px;
       box-shadow: var(--shadow-sm);
-      transition: border-color 0.15s ease;
-    }
-
-    .card:hover {
-      border-color: #cbd5e1;
     }
 
     .card-row {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: space-between;
-      gap: 16px;
+      gap: 12px;
     }
 
     .card-body { flex: 1; min-width: 0; }
 
     .card-title {
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 600;
       color: var(--text-main);
       line-height: 1.3;
+      word-break: break-word;
     }
 
     .card-sub {
       margin-top: 4px;
-      font-size: 13px;
+      font-size: 12px;
       color: var(--text-muted);
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      line-height: 1.3;
+      word-break: break-word;
     }
 
     .card-foot {
-      margin-top: 14px;
-      padding-top: 12px;
+      margin-top: 10px;
+      padding-top: 10px;
       border-top: 1px solid #f1f5f9;
       display: flex;
-      flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
       gap: 8px;
-      font-size: 13px;
+      font-size: 12px;
     }
 
     .card-valor {
       font-weight: 700;
       color: var(--text-main);
-      font-size: 15px;
+      font-size: 14px;
     }
 
-    /* Badges e Pills */
+    /* Badges */
     .pill {
       display: inline-flex;
       align-items: center;
-      padding: 4px 10px;
-      border-radius: 9999px;
+      padding: 2px 8px;
+      border-radius: 6px;
       background: #f1f5f9;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 500;
       color: var(--text-muted);
     }
@@ -458,103 +425,119 @@
       background: var(--bg-surface);
       border: 1px dashed var(--border);
       border-radius: var(--radius-md);
-      padding: 48px 24px;
+      padding: 32px 16px;
       text-align: center;
       color: var(--text-muted);
-      font-size: 14px;
+      font-size: 13px;
     }
 
     .hidden { display: none !important; }
 
-    /* Modal Profissional */
+    /* Modal de Confirmação (Bottom Sheet no Mobile) */
     .modal-bg {
       position: fixed;
       inset: 0;
-      background: rgba(15, 23, 42, 0.4);
+      background: rgba(15, 23, 42, 0.5);
       backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
       z-index: 50;
       display: flex;
-      align-items: center;
+      align-items: flex-end;
       justify-content: center;
-      padding: 16px;
     }
 
     .modal {
       width: 100%;
-      max-width: 420px;
       background: var(--bg-surface);
-      border-radius: var(--radius-lg);
-      padding: 24px;
-      box-shadow: var(--shadow-lg);
-      border: 1px solid var(--border);
+      border-top-left-radius: var(--radius-lg);
+      border-top-right-radius: var(--radius-lg);
+      padding: 20px 20px max(20px, env(safe-area-inset-bottom));
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.15);
+      animation: slideUp 0.2s ease-out;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
     }
 
     .modal h3 {
-      margin: 0 0 8px;
-      font-size: 18px;
+      margin: 0 0 6px;
+      font-size: 16px;
       font-weight: 700;
-      color: var(--text-main);
     }
 
     .modal p {
-      margin: 0 0 20px;
-      font-size: 14px;
+      margin: 0 0 16px;
+      font-size: 13px;
       color: var(--text-muted);
-      line-height: 1.5;
+      line-height: 1.4;
     }
 
     .modal-actions {
       display: flex;
-      gap: 10px;
-      justify-content: flex-end;
+      gap: 8px;
     }
 
     .modal-actions .btn {
-      height: 40px;
+      height: 44px;
       flex: 1;
+      font-size: 14px;
+      border-radius: var(--radius-sm);
     }
   </style>
 </head>
 <body>
-  <div class="app-layout">
-    <!-- Header -->
-    <header class="top-header">
-      <div class="top-container">
-        <div class="brand-section">
-          <div class="brand-icon">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-          </div>
-          <div class="brand-info">
-            <h1>Painel de Controle</h1>
-            <p class="user-email" id="quem">Tesouraria</p>
-          </div>
+
+  <!-- Header Fixo -->
+  <header class="top-header">
+    <div class="top-container">
+      <div class="brand-section">
+        <div class="brand-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
         </div>
-        <div class="top-actions" id="acoes"></div>
+        <div class="brand-info">
+          <h1>Tesouraria</h1>
+          <p class="user-email" id="quem">Acesso Restrito</p>
+        </div>
       </div>
-    </header>
+      <div class="top-actions" id="acoes"></div>
+    </div>
+  </header>
 
-    <!-- Navegação de Abas -->
-    <nav class="nav-bar">
-      <div class="tabs hidden" id="tabs">
-        <button type="button" class="tab active" data-tab="resumo">Resumo</button>
-        <button type="button" class="tab" data-tab="igrejas">Igrejas</button>
-        <button type="button" class="tab" data-tab="membros">Membros</button>
-        <button type="button" class="tab hidden" data-tab="orfaos" id="tabOrfaos">Órfãos</button>
-      </div>
-    </nav>
+  <!-- Conteúdo Principal -->
+  <main id="app"></main>
 
-    <!-- Conteúdo Principal -->
-    <main id="app"></main>
-  </div>
+  <!-- Navegação Inferior (Estilo App) -->
+  <nav class="bottom-nav">
+    <div class="tabs hidden" id="tabs">
+      <button type="button" class="tab active" data-tab="resumo">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+        <span>Resumo</span>
+      </button>
+      <button type="button" class="tab" data-tab="igrejas">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5m3 0v-4a1 1 0 011-1h2a1 1 0 011 1v4m-4 0h4"/></svg>
+        <span>Igrejas</span>
+      </button>
+      <button type="button" class="tab" data-tab="membros">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+        <span>Membros</span>
+      </button>
+      <button type="button" class="tab hidden" data-tab="orfaos" id="tabOrfaos">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+        <span>Órfãos</span>
+      </button>
+    </div>
+  </nav>
 
-  <!-- Modal de Confirmação -->
+  <!-- Modal Modal (Bottom Sheet Mobile) -->
   <div id="modalRoot" class="modal-bg hidden">
     <div class="modal">
       <h3 id="modalTitle">Confirmar Ação</h3>
-      <p id="modalMsg">Você tem certeza que deseja prosseguir?</p>
+      <p id="modalMsg">Tem certeza que deseja continuar?</p>
       <div class="modal-actions">
         <button type="button" class="btn" id="modalCancel">Cancelar</button>
-        <button type="button" class="btn btn-danger" id="modalOk">Confirmar Exclusão</button>
+        <button type="button" class="btn btn-danger" id="modalOk">Excluir</button>
       </div>
     </div>
   </div>
@@ -737,9 +720,9 @@
       root.innerHTML =
         '<div class="login-container">' +
         '<section class="login">' +
-        '<div class="login-logo"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>' +
+        '<div class="login-logo"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>' +
         "<h2>Painel de Gestão</h2>" +
-        "<p>Autentique-se com uma conta corporativa autorizada para acessar.</p>" +
+        "<p>Entre com uma conta Google autorizada.</p>" +
         (msg ? '<div class="banner warn">' + esc(msg) + "</div>" : "") +
         '<button type="button" class="btn btn-primary btn-block" id="btnEntrar">Entrar com Google</button>' +
         "</section>" +
@@ -825,9 +808,7 @@
           const nome = btn.getAttribute("data-nome") || id;
           abrirModal(
             "Excluir igreja?",
-            'Vai apagar "' +
-              nome +
-              '" e tudo ligado a ela (membros, registros e caixinhas). Não tem como desfazer aqui.',
+            'Vai apagar "' + nome + '" e todos os seus vínculos.',
             () => excluirIgrejaCompleta(id, nome)
           );
         };
@@ -838,7 +819,7 @@
           const id = btn.getAttribute("data-del-reg");
           abrirModal(
             "Excluir registro?",
-            "Este lançamento será removido do Firestore imediatamente.",
+            "Este lançamento será removido imediatamente.",
             () => excluirRegistro(id)
           );
         };
@@ -849,7 +830,7 @@
           const id = btn.getAttribute("data-del-membro");
           abrirModal(
             "Remover membro?",
-            "Só remove o vínculo com a igreja. A conta do Google continua existindo.",
+            "Só remove o vínculo com a igreja.",
             () => excluirMembro(id)
           );
         };
@@ -862,29 +843,19 @@
         '<div class="card">' +
         '<div class="card-row">' +
         '<div class="card-body">' +
-        '<div class="card-title">' +
-        esc(item.descricao || item.tipo || "Lançamento") +
-        "</div>" +
-        '<div class="card-sub">' +
-        "<span>" + esc(info.nome) + "</span> · " +
-        "<span>" + esc(item.tipoMovimento || "—") + "</span> · " +
-        "<span>" + esc(item.tipo || "—") + "</span>" +
-        "</div>" +
+        '<div class="card-title">' + esc(item.descricao || item.tipo || "Lançamento") + '</div>' +
+        '<div class="card-sub">' + esc(info.nome) + " · " + esc(item.tipoMovimento || "—") + '</div>' +
+        '</div>' +
+        '<button type="button" class="icon-btn" data-del-reg="' + esc(item.id) + '" title="Excluir">' + iconTrash() + '</button>' +
+        '</div>' +
         '<div class="card-foot">' +
-        "<span>" + esc(dataTxt(tsDe(item))) + "</span>" +
-        '<div style="display:flex;align-items:center;gap:10px;">' +
-        '<span class="card-valor">' + money.format(valorRegistro(item)) + "</span>" +
-        (info.orfao ? '<span class="pill alert">órfão</span>' : "") +
-        "</div>" +
-        "</div>" +
-        "</div>" +
-        '<button type="button" class="icon-btn" data-del-reg="' +
-        esc(item.id) +
-        '" title="Excluir" aria-label="Excluir registro">' +
-        iconTrash() +
-        "</button>" +
-        "</div>" +
-        "</div>"
+        '<span>' + esc(dataTxt(tsDe(item))) + '</span>' +
+        '<div style="display:flex;align-items:center;gap:6px;">' +
+        '<span class="card-valor">' + money.format(valorRegistro(item)) + '</span>' +
+        (info.orfao ? '<span class="pill alert">órfão</span>' : '') +
+        '</div>' +
+        '</div>' +
+        '</div>'
       );
     }
 
@@ -894,24 +865,24 @@
 
       let html =
         '<div class="kpis">' +
-        '<div class="kpi"><div class="kpi-info"><label>Igrejas</label><strong>' + igrejas.length + '</strong></div><div class="kpi-icon"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 21h18M3 7v14M21 7v14M6 21V11m4 10V11m4 10V11m4 10V11M12 3l9 4H3l9-4z"/></svg></div></div>' +
-        '<div class="kpi"><div class="kpi-info"><label>Membros</label><strong>' + membros.length + '</strong></div><div class="kpi-icon"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div></div>' +
-        '<div class="kpi"><div class="kpi-info"><label>Registros</label><strong>' + registros.length + '</strong></div><div class="kpi-icon"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5.586a1 1 0 0 1 .707.293l5.414 5.414a1 1 0 0 1 .293.707V19a2 2 0 0 1-2 2z"/></svg></div></div>' +
-        '<div class="kpi' + (orfaos.length ? " warn" : "") + '"><div class="kpi-info"><label>Órfãos</label><strong>' + orfaos.length + '</strong></div><div class="kpi-icon"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg></div></div>' +
-        "</div>";
+        '<div class="kpi"><label>Igrejas</label><strong>' + igrejas.length + '</strong></div>' +
+        '<div class="kpi"><label>Membros</label><strong>' + membros.length + '</strong></div>' +
+        '<div class="kpi"><label>Registros</label><strong>' + registros.length + '</strong></div>' +
+        '<div class="kpi' + (orfaos.length ? " warn" : "") + '"><label>Órfãos</label><strong>' + orfaos.length + '</strong></div>' +
+        '</div>';
 
       if (orfaos.length) {
-        html += '<div class="banner warn"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg> Há registros desvinculados de igrejas válidas. Acesse a aba Órfãos.</div>';
+        html += '<div class="banner warn">Existem registros desvinculados de igrejas.</div>';
       } else {
-        html += '<div class="banner ok"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg> Sistema operando perfeitamente. Nenhum registro órfão.</div>';
+        html += '<div class="banner ok">Nenhum registro órfão.</div>';
       }
 
-      html += '<div class="section-header"><div class="section-title">Últimos ' + QTD_ULTIMOS + " Lançamentos</div></div>";
+      html += '<div class="section-title">Últimos Lançamentos</div>';
 
       if (!ultimos.length) {
-        html += '<div class="empty">Nenhum lançamento cadastrado até o momento.</div>';
+        html += '<div class="empty">Nenhum lançamento até o momento.</div>';
       } else {
-        html += '<div class="stack">' + ultimos.map((item) => cardLancamento(item, mapaNome)).join("") + "</div>";
+        html += '<div class="stack">' + ultimos.map((item) => cardLancamento(item, mapaNome)).join("") + '</div>';
       }
 
       return html;
@@ -919,9 +890,7 @@
 
     function renderIgrejas(prep) {
       const list = prep.linhasIgreja;
-      if (!list.length) {
-        return '<div class="empty">Nenhuma igreja cadastrada.</div>';
-      }
+      if (!list.length) return '<div class="empty">Nenhuma igreja cadastrada.</div>';
 
       return (
         '<div class="stack">' +
@@ -931,29 +900,26 @@
               '<div class="card">' +
               '<div class="card-row">' +
               '<div class="card-body">' +
-              '<div class="card-title">' + esc(ig.nome) + "</div>" +
-              '<div class="card-sub">' + ig.membros + " membro(s) cadastrado(s)</div>" +
+              '<div class="card-title">' + esc(ig.nome) + '</div>' +
+              '<div class="card-sub">' + ig.membros + ' membro(s)</div>' +
+              '</div>' +
+              '<button type="button" class="icon-btn" data-del-igreja="' + esc(ig.id) + '" data-nome="' + esc(ig.nome) + '" title="Excluir">' + iconTrash() + '</button>' +
+              '</div>' +
               '<div class="card-foot">' +
-              "<span>Última movimentação: " + esc(dataTxt(ig.ultimo)) + "</span>" +
-              (ig.tipo && ig.tipo !== "—" ? '<span class="pill">' + esc(ig.tipo) + "</span>" : "") +
-              (ig.exclusao ? '<span class="pill alert">Exclusão em: ' + esc(dataTxt(ig.exclusao)) + "</span>" : "") +
-              "</div>" +
-              "</div>" +
-              '<button type="button" class="icon-btn" data-del-igreja="' + esc(ig.id) + '" data-nome="' + esc(ig.nome) + '" title="Excluir igreja" aria-label="Excluir igreja">' +
-              iconTrash() +
-              "</button>" +
-              "</div>" +
-              "</div>"
+              '<span>Último: ' + esc(dataTxt(ig.ultimo)) + '</span>' +
+              (ig.exclusao ? '<span class="pill alert">Exclui ' + esc(dataTxt(ig.exclusao)) + '</span>' : '') +
+              '</div>' +
+              '</div>'
             );
           })
           .join("") +
-        "</div>"
+        '</div>'
       );
     }
 
     function renderMembros(prep) {
       const list = prep.membrosLinhas;
-      if (!list.length) return '<div class="empty">Nenhum membro cadastrado.</div>';
+      if (!list.length) return '<div class="empty">Nenhum membro.</div>';
 
       return (
         '<div class="stack">' +
@@ -963,36 +929,32 @@
               '<div class="card">' +
               '<div class="card-row">' +
               '<div class="card-body">' +
-              '<div class="card-title">' + esc(m.email) + "</div>" +
-              '<div class="card-sub">' + esc(m.igreja) + "</div>" +
+              '<div class="card-title">' + esc(m.email) + '</div>' +
+              '<div class="card-sub">' + esc(m.igreja) + '</div>' +
+              '</div>' +
+              '<button type="button" class="icon-btn" data-del-membro="' + esc(m.id) + '" title="Remover">' + iconTrash() + '</button>' +
+              '</div>' +
               '<div class="card-foot">' +
-              '<span class="pill">' + esc(m.papel) + "</span>" +
-              (m.orfao ? '<span class="pill alert">Igreja não encontrada</span>' : "") +
-              "</div>" +
-              "</div>" +
-              '<button type="button" class="icon-btn" data-del-membro="' + esc(m.id) + '" title="Remover membro" aria-label="Remover membro">' +
-              iconTrash() +
-              "</button>" +
-              "</div>" +
-              "</div>"
+              '<span class="pill">' + esc(m.papel) + '</span>' +
+              (m.orfao ? '<span class="pill alert">Sem igreja</span>' : '') +
+              '</div>' +
+              '</div>'
             );
           })
           .join("") +
-        "</div>"
+        '</div>'
       );
     }
 
     function renderOrfaos(prep) {
       const list = prep.orfaos;
-      if (!list.length) {
-        return '<div class="empty">Nenhum registro órfão.</div>';
-      }
+      if (!list.length) return '<div class="empty">Nenhum registro órfão.</div>';
 
       return (
-        '<div class="banner warn">Estes lançamentos estão sem vinculação com uma igreja válida.</div>' +
+        '<div class="banner warn">Lançamentos sem igreja válida.</div>' +
         '<div class="stack">' +
         list.map((r) => cardLancamento(r, prep.mapaNome)).join("") +
-        "</div>"
+        '</div>'
       );
     }
 
@@ -1001,7 +963,7 @@
 
       if (prep.orfaos.length) {
         tabOrfaos.classList.remove("hidden");
-        tabOrfaos.textContent = "Órfãos (" + prep.orfaos.length + ")";
+        tabOrfaos.querySelector("span").textContent = "Órfãos (" + prep.orfaos.length + ")";
       } else {
         tabOrfaos.classList.add("hidden");
         if (tabAtual === "orfaos") tabAtual = "resumo";
@@ -1023,13 +985,13 @@
       t.onclick = () => {
         tabAtual = t.getAttribute("data-tab");
         render();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       };
     });
 
     async function carregar(silencioso) {
       if (!silencioso) {
-        root.innerHTML =
-          '<div style="text-align:center;padding:40px;color:var(--text-muted);font-size:14px;">Carregando dados...</div>';
+        root.innerHTML = '<div style="text-align:center;padding:30px;color:var(--text-muted);font-size:13px;">Carregando...</div>';
       }
       const [igrejasSnap, membrosSnap, registrosSnap] = await Promise.all([
         getDocs(collection(db, "igrejas")),
@@ -1052,14 +1014,14 @@
       }
       if (!emailOk(user)) {
         await sair();
-        telaLogin("Esta conta não tem permissão de acesso ao painel.");
+        telaLogin("Conta não autorizada.");
         return;
       }
 
       quem.textContent = user.email || "";
       tabsEl.classList.remove("hidden");
       acoes.innerHTML =
-        '<button type="button" class="btn" id="btnRefresh"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg> Atualizar</button>' +
+        '<button type="button" class="btn" id="btnRefresh" title="Atualizar"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg></button>' +
         '<button type="button" class="btn btn-danger" id="btnSair">Sair</button>';
       document.getElementById("btnSair").onclick = () => sair();
       document.getElementById("btnRefresh").onclick = () => carregar();
@@ -1067,10 +1029,7 @@
       try {
         await carregar();
       } catch (e) {
-        root.innerHTML =
-          '<div class="banner err">Não foi possível carregar as informações do servidor (' +
-          esc(e?.code || e?.message || "erro") +
-          ").</div>";
+        root.innerHTML = '<div class="banner err">Erro ao carregar dados.</div>';
       }
     });
   </script>
